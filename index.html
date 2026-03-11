@@ -2,92 +2,304 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App de Espanhol - 250 Níveis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Espanhol Pro">
+    <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Tour_Eiffel_Wikimedia_Commons.jpg/150px-Tour_Eiffel_Wikimedia_Commons.jpg">
+
+    <title>Espanhol Pro - Domine a Pronúncia</title>
     <style>
+        /* CSS RESET & VARIAVEIS DE CORES DARK */
+        :root {
+            --bg-page: #050507; 
+            --app-bg: #121216; 
+            --frame-border: #2a2a30; 
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: #9aa0a6;
+            --accent-blue: #00e5ff; 
+            --accent-hover: #00b8d4;
+            --success-green: #2ecc71;
+            --error-red: #e74c3c;
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
-            background-color: #f4f4f9;
-            padding: 20px;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-            max-width: 700px; 
-            margin: 0 auto;
-        }
-        
-        .painel-botoes {
+            font-family: var(--font-main);
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
             justify-content: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #eee;
-            max-height: 200px;
-            overflow-y: auto; 
+            align-items: center;
         }
+
+        .app-container {
+            background-color: var(--app-bg);
+            width: 100%;
+            max-width: 420px; 
+            height: 100%;
+            max-height: 850px; 
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+
+        header {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(255,255,255,0.01);
+        }
+
+        header h1 { font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--text-primary); }
+        header p { font-size: 11px; color: var(--accent-blue); margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
+
+        .quadro-wrapper {
+            padding: 20px 20px 0 20px;
+        }
+
+        .quadro-imagem {
+            width: 100%;
+            height: 190px; 
+            border-radius: 16px; 
+            border: 6px solid var(--frame-border); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(0,0,0,0.3);
+            background-color: #2a2a30; 
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.8s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tag-local {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.15);
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .display-frase {
+            flex: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 25px;
+            text-align: center;
+        }
+
+        .frase-alvo { font-size: 26px; font-weight: 800; line-height: 1.3; color: var(--text-primary); margin-bottom: 8px; word-wrap: break-word; }
+        .traducao { font-size: 16px; color: var(--accent-blue); font-style: italic; font-weight: 500; margin-bottom: 20px; opacity: 0.9; }
         
-        .botao-numero {
-            background-color: #e0e0e0;
-            color: #333;
-            border: 2px solid transparent;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
+        .feedback-area {
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .resultado { font-size: 22px; font-weight: 700; }
+        .correto { color: var(--success-green); }
+        .errado { color: var(--error-red); text-decoration: underline; text-underline-offset: 4px; }
+        .status-msg { font-size: 13px; color: var(--text-secondary); font-weight: 600; margin-top: 8px;}
+
+        .controles-container {
+            padding: 10px 20px 20px 20px;
+        }
+
+        .controles-voz { display: flex; justify-content: center; gap: 12px; }
+
+        .btn-action {
+            flex: 1;
+            border: none;
+            padding: 14px 0;
             font-size: 14px;
-            width: 48px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
         }
-        .botao-numero:hover { background-color: #d0d0d0; }
-        
-        .botao-numero.ativo { border: 2px solid #000; transform: scale(1.1); } 
-        .botao-numero.concluido { background-color: #28a745; color: white; } 
 
-        .frase-alvo { font-size: 28px; font-weight: bold; color: #333; margin-bottom: 5px; }
-        .traducao { font-size: 18px; color: #666; font-style: italic; margin-bottom: 25px; }
-        
-        .controles-voz { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; }
+        .btn-ouvir { background-color: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-primary); }
+        .btn-ouvir:hover { background-color: rgba(255,255,255,0.1); }
 
-        .btn-gravar { background-color: #007BFF; color: white; border: none; padding: 15px 25px; font-size: 18px; border-radius: 8px; cursor: pointer; }
-        .btn-gravar:hover { background-color: #0056b3; }
+        .btn-gravar { background-color: var(--accent-blue); box-shadow: 0 4px 15px rgba(0,229,255,0.25); color: #000; }
+        .btn-gravar:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
+        .btn-gravar.gravando { animation: pulsarRed 1.5s infinite; background-color: var(--error-red); color: #fff; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4); }
 
-        .btn-ouvir { background-color: #17a2b8; color: white; border: none; padding: 15px 25px; font-size: 18px; border-radius: 8px; cursor: pointer; }
-        .btn-ouvir:hover { background-color: #138496; }
+        @keyframes pulsarRed {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.03); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .painel-rodape {
+            background: rgba(0,0,0,0.4);
+            border-top: 1px solid var(--border-color);
+            padding: 15px;
+        }
+
+        .titulo-licoes { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; font-weight: bold; padding-left: 5px;}
+
+        .painel-botoes {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 8px;
+            max-height: 130px; 
+            overflow-y: auto;
+            padding-right: 5px; 
+        }
         
-        .feedback { margin-top: 15px; font-size: 16px; color: #555; font-weight: bold;}
-        .resultado { font-size: 24px; margin-top: 20px; font-weight: bold; }
-        
-        .correto { color: #28a745; }
-        .errado { color: #dc3545; text-decoration: underline; }
+        .painel-botoes::-webkit-scrollbar { width: 4px; }
+        .painel-botoes::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+        .botao-numero {
+            background-color: rgba(255,255,255,0.04);
+            color: var(--text-secondary);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .botao-numero:hover { background-color: rgba(255,255,255,0.1); color: var(--text-primary); }
+        .botao-numero.ativo { border-color: var(--accent-blue); color: var(--accent-blue); background: rgba(0,229,255,0.08); }
+        .botao-numero.concluido { background-color: var(--success-green); color: #fff; border-color: transparent; }
+
+        @media (min-height: 850px) {
+            .app-container { height: 95vh; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h3>Selecione a lição (Verde = Concluída):</h3>
-        <div class="painel-botoes" id="painelBotoes"></div>
-
-        <div class="frase-alvo" id="fraseAlvo">...</div>
-        <div class="traducao" id="traducaoPt">...</div>
+    <div class="app-container">
         
-        <div class="controles-voz">
-            <button class="btn-ouvir" id="btnOuvir">🔊 Ouvir</button>
-            <button class="btn-gravar" id="btnGravar">🎤 Falar</button>
+        <header>
+            <h1>Espanhol Pro</h1>
+            <p>Habla con claridad, viaja por el mundo</p>
+        </header>
+
+        <div class="quadro-wrapper">
+            <div class="quadro-imagem" id="quadroImagem">
+                <div id="tagLocal" class="tag-local">📍 Cargando...</div>
+            </div>
         </div>
 
-        <p class="feedback" id="status">Aperte em Falar e leia a frase.</p>
-        <div class="resultado" id="resultadoTela"></div>
+        <div class="display-frase">
+            <div class="frase-alvo" id="fraseAlvo">...</div>
+            <div class="traducao" id="traducaoPt">...</div>
+            
+            <div class="feedback-area">
+                <div class="resultado" id="resultadoTela"></div>
+                <div class="status-msg" id="status">Seleccione una lección abajo.</div>
+            </div>
+        </div>
+
+        <div class="controles-container">
+            <div class="controles-voz">
+                <button class="btn-action btn-ouvir" id="btnOuvir">
+                    <i>🔊</i> Ouvir
+                </button>
+                <button class="btn-action btn-gravar" id="btnGravar">
+                    <i id="mic-icon">🎤</i> <span id="lbl-gravar">Falar</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="painel-rodape">
+            <div class="titulo-licoes">Módulos de Estudo</div>
+            <div class="painel-botoes" id="painelBotoes"></div>
+        </div>
+
     </div>
 
     <script>
-        // BANCO DE DADOS - 250 FRASES (Básico 1-100, Médio 101-250)
+        const imagensDeFundo = [
+            { url: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=800&q=80', nome: 'Torre Eiffel, París' },
+            { url: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=800&q=80', nome: 'Nueva York, EE. UU.' },
+            { url: 'https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80', nome: 'Tokio, Japón' },
+            { url: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80', nome: 'Coliseo, Roma' },
+            { url: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80', nome: 'Londres, Inglaterra' },
+            { url: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=800&q=80', nome: 'Río de Janeiro, Brasil' },
+            { url: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80', nome: 'Ópera de Sídney' },
+            { url: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80', nome: 'Kioto, Japón' },
+            { url: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80', nome: 'Taj Mahal, India' },
+            { url: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80', nome: 'Dubái, EAU' },
+            { url: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80', nome: 'Santorini, Grecia' },
+            { url: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=800&q=80', nome: 'Venecia, Italia' },
+            { url: 'https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=800&q=80', nome: 'Machu Picchu, Perú' },
+            { url: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80', nome: 'Muralla China' },
+            { url: 'https://images.unsplash.com/photo-1539667468225-eebb663053e6?auto=format&fit=crop&w=800&q=80', nome: 'Pirámides de Guiza' },
+            { url: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=800&q=80', nome: 'Golden Gate, EE. UU.' },
+            { url: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80', nome: 'Ruta 66, EE. UU.' },
+            { url: 'https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&w=800&q=80', nome: 'Hollywood, EE. UU.' },
+            { url: 'https://images.unsplash.com/photo-1552035489-3974ee0f04eb?auto=format&fit=crop&w=800&q=80', nome: 'Ámsterdam, Holanda' },
+            { url: 'https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?auto=format&fit=crop&w=800&q=80', nome: 'Estambul, Turquía' },
+            { url: 'https://images.unsplash.com/photo-1526649661456-89c7ed4d00b8?auto=format&fit=crop&w=800&q=80', nome: 'Singapur' },
+            { url: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80', nome: 'Hong Kong' },
+            { url: 'https://images.unsplash.com/photo-1560930950-5ce20d36906f?auto=format&fit=crop&w=800&q=80', nome: 'Berlín, Alemania' },
+            { url: 'https://images.unsplash.com/photo-1583422409516-15ec0a05c317?auto=format&fit=crop&w=800&q=80', nome: 'Barcelona, España' },
+            { url: 'https://images.unsplash.com/photo-1551000673-f9c3c8d3da16?auto=format&fit=crop&w=800&q=80', nome: 'Atenas, Grecia' },
+            { url: 'https://images.unsplash.com/photo-1531366936337-7785a8208447?auto=format&fit=crop&w=800&q=80', nome: 'Aurora Boreal' },
+            { url: 'https://images.unsplash.com/photo-1474015977092-28f09d846b41?auto=format&fit=crop&w=800&q=80', nome: 'Gran Cañón, EE. UU.' },
+            { url: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=800&q=80', nome: 'Alpes Suizos' },
+            { url: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=80', nome: 'Islas Maldivas' },
+            { url: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?auto=format&fit=crop&w=800&q=80', nome: 'Banff, Canadá' },
+            { url: 'https://images.unsplash.com/photo-1579737190987-25e4fbaaa44d?auto=format&fit=crop&w=800&q=80', nome: 'Patagonia, Argentina' },
+            { url: 'https://images.unsplash.com/photo-1454692173233-f4f34c12adad?auto=format&fit=crop&w=800&q=80', nome: 'Desierto del Sahara' },
+            { url: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=800&q=80', nome: 'Cascadas, Islandia' },
+            { url: 'https://images.unsplash.com/photo-1490682143684-14369e18dce8?auto=format&fit=crop&w=800&q=80', nome: 'Monte Fuji, Japón' },
+            { url: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=800&q=80', nome: 'Yellowstone, EE. UU.' },
+            { url: 'https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=800&q=80', nome: 'Safari, Kenia' },
+            { url: 'https://images.unsplash.com/photo-1553531384-cc64ac80f931?auto=format&fit=crop&w=800&q=80', nome: 'Monte Everest' },
+            { url: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?auto=format&fit=crop&w=800&q=80', nome: 'Cataratas del Iguazú' },
+            { url: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=800&q=80', nome: 'Selva Amazónica' },
+            { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80', nome: 'Playa del Caribe' },
+            { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80', nome: 'Fiordos, Noruega' },
+            { url: 'https://images.unsplash.com/photo-1438786657495-640937046d18?auto=format&fit=crop&w=800&q=80', nome: 'Salar de Uyuni' },
+            { url: 'https://images.unsplash.com/photo-1502021680123-db54070a72fb?auto=format&fit=crop&w=800&q=80', nome: 'Capadocia, Turquía' },
+            { url: 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=800&q=80', nome: 'Cordillera de los Andes' },
+            { url: 'https://images.unsplash.com/photo-1498307833015-e7b400441eb8?auto=format&fit=crop&w=800&q=80', nome: 'Islas Galápagos' },
+            { url: 'https://images.unsplash.com/photo-1506015391300-4802dc74de2e?auto=format&fit=crop&w=800&q=80', nome: 'Bahía de Ha Long' },
+            { url: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80', nome: 'Selva Negra, Alemania' },
+            { url: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80', nome: 'Kilimanjaro, Tanzania' },
+            { url: 'https://images.unsplash.com/photo-1541427573-0305886e0044?auto=format&fit=crop&w=800&q=80', nome: 'Yosemite, EE. UU.' },
+            { url: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=800&q=80', nome: 'Playa, Maldivas' }
+        ];
+
+        // 250 Frases do Básico ao Avançado
         const listaDeFrases = [
-            // --- BÁSICO: Saudações e Primeiros Contatos (1-25) ---
             { es: "Hola, ¿cómo estás?", pt: "Olá, como vai você?" },
             { es: "Buenos días.", pt: "Bom dia." },
             { es: "Buenas tardes.", pt: "Boa tarde." },
@@ -113,8 +325,6 @@
             { es: "¡Hasta luego!", pt: "Até logo!" },
             { es: "¡Hasta mañana!", pt: "Até amanhã!" },
             { es: "Adiós.", pt: "Adeus / Tchau." },
-
-            // --- BÁSICO: Direções, Transportes e Compras (26-60) ---
             { es: "¿Dónde está el baño?", pt: "Onde fica o banheiro?" },
             { es: "¿Cuánto cuesta esto?", pt: "Quanto custa isso?" },
             { es: "Es muy caro.", pt: "É muito caro." },
@@ -150,8 +360,6 @@
             { es: "Llama a la policía.", pt: "Chame a polícia." },
             { es: "He perdido mi pasaporte.", pt: "Perdi meu passaporte." },
             { es: "Me duele la cabeza.", pt: "Minha cabeça dói." },
-
-            // --- BÁSICO: Ações, Pessoas e Sentimentos (61-100) ---
             { es: "Estoy muy cansado.", pt: "Estou muito cansado." },
             { es: "Estoy muy feliz hoy.", pt: "Estou muito feliz hoje." },
             { es: "Ella es mi mejor amiga.", pt: "Ela é minha melhor amiga." },
@@ -192,8 +400,6 @@
             { es: "Tengo un perro y un gato.", pt: "Tenho um cachorro e um gato." },
             { es: "Vamos a la playa.", pt: "Vamos à praia." },
             { es: "Me encanta leer libros.", pt: "Adoro ler livros." },
-
-            // --- MÉDIO: Frases Mais Longas e Contextuais (101-150) ---
             { es: "Creo que va a llover esta tarde.", pt: "Acho que vai chover esta tarde." },
             { es: "¿Te gustaría venir al cine con nosotros?", pt: "Você gostaria de vir ao cinema conosco?" },
             { es: "No estoy seguro de lo que quieres decir.", pt: "Não tenho certeza do que você quer dizer." },
@@ -244,8 +450,6 @@
             { es: "Esta es la primera vez que pruebo la comida mexicana.", pt: "Esta é a primeira vez que provo comida mexicana." },
             { es: "A pesar de la lluvia, decidimos salir a pasear.", pt: "Apesar da chuva, decidimos sair para passear." },
             { es: "La tienda de ropa está justo enfrente de la panadería.", pt: "A loja de roupas fica bem em frente à padaria." },
-
-            // --- MÉDIO AVANÇADO: Expressões mais ricas e frases compostas (151-200) ---
             { es: "No me parece que sea una buena idea en este momento.", pt: "Não me parece que seja uma boa ideia neste momento." },
             { es: "Si hubiera sabido que venías, habría preparado algo especial.", pt: "Se eu soubesse que você vinha, teria preparado algo especial." },
             { es: "Llevo viviendo en este barrio más de diez años.", pt: "Moro neste bairro há mais de dez anos." },
@@ -285,7 +489,7 @@
             { es: "Me llevó más de una hora resolver el rompecabezas.", pt: "Levei mais de uma hora para resolver o quebra-cabeça." },
             { es: "Dudo mucho que el paquete llegue antes del viernes por la tarde.", pt: "Duvido muito que o pacote chegue antes de sexta-feira à tarde." },
             { es: "El concierto fue tan espectacular que la gente no dejaba de aplaudir.", pt: "O show foi tão espetacular que as pessoas não paravam de aplaudir." },
-            { es: "En mi opinión, deberíamos buscar una solución alternativa al problema.", pt: "Na minha opinião, deveríamos buscar uma solução alternativa para o problema." },
+            { es: "En mi opinión, deberíamos buscar una solución alternativa al problema.", pt: "Na minha opinião, deveríamos buscar uma solución alternativa para o problema." },
             { es: "No vale la pena discutir por algo tan insignificante.", pt: "Não vale a pena discutir por algo tão insignificante." },
             { es: "Lo extraño es que nadie se ha dado cuenta de su ausencia.", pt: "O estranho é que ninguém percebeu a ausência dele." },
             { es: "Quería pedirte un favor enorme, si no es mucha molestia.", pt: "Queria te pedir um favor enorme, se não for muito incômodo." },
@@ -296,15 +500,13 @@
             { es: "El testigo declaró todo lo que vio durante el incidente de ayer.", pt: "A testemunha declarou tudo o que viu durante o incidente de ontem." },
             { es: "Me conformo con que podamos terminar el proyecto a tiempo.", pt: "Fico satisfeito se pudermos terminar o projeto a tempo." },
             { es: "A estas alturas, ya no me sorprende nada de lo que diga.", pt: "A esta altura, já não me surpreende nada do que ele diga." },
-
-            // --- MÉDIO AVANÇADO (201-250) ---
             { es: "Si hubieras llegado cinco minutos antes, habrías visto el comienzo del espectáculo.", pt: "Se você tivesse chegado cinco minutos antes, teria visto o início do espetáculo." },
             { es: "Es imprescindible que todos los empleados asistan a la reunión anual.", pt: "É imprescindível que todos os funcionários compareçam à reunião anual." },
             { es: "Me molesta profundamente que la gente tire basura en la calle.", pt: "Me incomoda profundamente que as pessoas joguem lixo na rua." },
             { es: "A medida que pasaban los años, su amistad se hacía cada vez más fuerte.", pt: "À medida que os anos passavam, a amizade deles ficava cada vez mais forte." },
             { es: "No cabe duda de que este ha sido un año lleno de desafíos inesperados.", pt: "Não resta dúvida de que este foi um ano cheio de desafios inesperados." },
             { es: "Te aconsejo que no tomes ninguna decisión precipitada sobre ese asunto.", pt: "Te aconselho a não tomar nenhuma decisão precipitada sobre esse assunto." },
-            { es: "Ese restaurante tiene la reputación de ofrecer la mejor gastronomía de la ciudad.", pt: "Aquele restaurante tem a reputación de oferecer a melhor gastronomia da cidade." },
+            { es: "Ese restaurante tiene la reputación de ofrecer la mejor gastronomía de la ciudad.", pt: "Aquele restaurante tem a reputação de oferecer a melhor gastronomia da cidade." },
             { es: "Por si acaso llueve, he metido un paraguas en la mochila.", pt: "Para o caso de chover, coloquei um guarda-chuva na mochila." },
             { es: "De haber sabido las consecuencias, jamás habría aceptado el trato.", pt: "Se soubesse das consequências, jamais teria aceitado o acordo." },
             { es: "Es una lástima que el museo histórico esté cerrado por reformas actualmente.", pt: "É uma pena que o museu histórico esteja fechado para reformas atualmente." },
@@ -339,7 +541,7 @@
             { es: "Cuanto antes abordemos este conflicto interno, menor será el impacto en nuestra productividad.", pt: "Quanto antes abordarmos este conflito interno, menor será o impacto em nossa produtividade." },
             { es: "Me quedo tranquilo sabiendo que todo el papeleo legal ya está solucionado.", pt: "Fico tranquilo sabendo que toda a papelada legal já está resolvida." },
             { es: "La conferencia superó todas las expectativas, aportando ideas brillantes para el futuro del sector.", pt: "A conferência superou todas as expectativas, trazendo ideias brilhantes para o futuro do setor." },
-            { es: "De ningún modo permitiré que traten a mis empleados con falta de respeto.", pt: "De modo algum permitirei que tratem meus funcionários com falta de respeito." },
+            { es: "De ningún modo permitiré que traten a mis empleados con falta de respeto.", pt: "De modo algum permitirei que tratem meus funcionários com falta de respeto." },
             { es: "El chef utiliza ingredientes locales para realzar el auténtico sabor de cada plato tradicional.", pt: "O chef usa ingredientes locais para realçar o sabor autêntico de cada prato tradicional." },
             { es: "Sería un error garrafal ignorar las advertencias emitidas por el departamento de seguridad.", pt: "Seria um erro crasso ignorar os avisos emitidos pelo departamento de segurança." },
             { es: "Por consiguiente, hemos decidido reestructurar completamente el departamento de marketing corporativo.", pt: "Por conseguinte, decidimos reestruturar completamente o departamento de marketing corporativo." },
@@ -350,22 +552,73 @@
             { es: "Finalmente, logré dominar la pronunciación en español gracias a mi constancia y práctica diaria.", pt: "Finalmente, consegui dominar a pronúncia em espanhol graças à minha constância e prática diária." }
         ];
 
-        const painelBotoes = document.getElementById('painelBotoes');
-        const txtFraseAlvo = document.getElementById('fraseAlvo');
-        const txtTraducaoPt = document.getElementById('traducaoPt');
-        const btnGravar = document.getElementById('btnGravar');
-        const btnOuvir = document.getElementById('btnOuvir');
-        const statusTexto = document.getElementById('status');
-        const resultadoTela = document.getElementById('resultadoTela');
+        const dom = {
+            quadro: document.getElementById('quadroImagem'), 
+            painel: document.getElementById('painelBotoes'),
+            frase: document.getElementById('fraseAlvo'),
+            pt: document.getElementById('traducaoPt'),
+            btnGravar: document.getElementById('btnGravar'),
+            lblGravar: document.getElementById('lbl-gravar'),
+            btnOuvir: document.getElementById('btnOuvir'),
+            status: document.getElementById('status'),
+            resultado: document.getElementById('resultadoTela'),
+            tagLocal: document.getElementById('tagLocal')
+        };
 
         let indiceAtual = 0;
         let fraseAtualEspanhol = ""; 
+        
+        // Novo ID no local storage para não dar conflito com os testes antigos
+        let progressoSalvo = JSON.parse(localStorage.getItem('progressoEspanholProV3')) || [];
+        
+        let isRecording = false; 
 
-        // NOVO NOME no LocalStorage para não misturar com os testes antigos
-        let progressoSalvo = JSON.parse(localStorage.getItem('progressoEspanholV2')) || [];
+        // --- MOTOR DE ÁUDIO NATIVO (SONS DE ACERTO/ERRO) ---
+        let audioCtx;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
 
-        // SISTEMA DE VOZ DO NAVEGADOR (Agora com Espanhol es-ES)
-        btnOuvir.addEventListener('click', () => {
+        function tocarSomAcerto() {
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.1); 
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } catch(e) {}
+        }
+
+        function tocarSomErro() {
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } catch(e) {}
+        }
+
+        // --- SISTEMA DE VOZ DO ROBÔ ---
+        dom.btnOuvir.addEventListener('click', () => {
+            initAudio(); 
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel(); 
                 const robo = new SpeechSynthesisUtterance(fraseAtualEspanhol);
@@ -375,135 +628,165 @@
             }
         });
 
-        function criarBotoes() {
-            painelBotoes.innerHTML = ""; 
+        function inicializarApp() {
             for (let i = 0; i < listaDeFrases.length; i++) {
                 let botao = document.createElement("button");
-                botao.innerText = i + 1;
+                botao.innerText = (i + 1).toString().padStart(3, '0');
                 botao.className = "botao-numero";
                 botao.id = "btn-" + i;
-                
-                if (progressoSalvo.includes(i)) {
-                    botao.classList.add('concluido');
-                }
+                if (progressoSalvo.includes(i)) botao.classList.add('concluido');
                 
                 botao.addEventListener("click", () => {
+                    initAudio();
                     mudarFrase(i);
                 });
-                painelBotoes.appendChild(botao);
+                
+                dom.painel.appendChild(botao);
             }
+            mudarFrase(progressoSalvo.length > 0 ? Math.min(Math.max(...progressoSalvo) + 1, listaDeFrases.length - 1) : 0);
         }
 
         function mudarFrase(indice) {
             indiceAtual = indice;
             fraseAtualEspanhol = listaDeFrases[indice].es;
-            txtFraseAlvo.innerText = fraseAtualEspanhol;
-            txtTraducaoPt.innerText = listaDeFrases[indice].pt;
+            dom.frase.innerText = fraseAtualEspanhol;
+            dom.pt.innerText = listaDeFrases[indice].pt;
             
             document.querySelectorAll('.botao-numero').forEach(b => b.classList.remove('ativo'));
-            document.getElementById("btn-" + indice).classList.add('ativo');
+            const btn = document.getElementById("btn-" + indice);
+            if(btn) {
+                btn.classList.add('ativo');
+                btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
 
-            resultadoTela.innerHTML = "";
-            statusTexto.innerText = "Aperte en Hablar y lee la frase."; // Texto em Espanhol/Misturado para praticar
-            statusTexto.style.color = "#555";
+            dom.resultado.innerHTML = "";
+            dom.status.innerText = "Aperte 'Falar' e repita a frase.";
+            dom.status.style.color = "var(--text-secondary)";
+
+            const imgSorteada = imagensDeFundo[Math.floor(Math.random() * imagensDeFundo.length)];
+            dom.quadro.style.backgroundImage = `url('${imgSorteada.url}')`;
+            dom.tagLocal.innerText = `📍 ${imgSorteada.nome}`;
+            
+            if (isRecording) {
+                 dom.btnGravar.click(); 
+            }
         }
 
-        criarBotoes();
-        mudarFrase(0);
-
-        // SISTEMA DO MICROFONE (Mantido igual ao inglês, apenas mudei o idioma)
+        // --- SISTEMA ROBUSTO DO MICROFONE ---
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null; 
+
         if (SpeechRecognition) {
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'es-ES'; // Idioma em Espanhol
-            recognition.interimResults = false;
-
-            btnGravar.addEventListener('click', () => {
-                try {
-                    recognition.start();
-                    statusTexto.innerText = "🎤 Escuchando... ¡Habla ahora!";
-                    statusTexto.style.color = "#007BFF";
-                    resultadoTela.innerHTML = "";
-                } catch(e) {
-                    console.error("Mic error:", e);
+            dom.btnGravar.addEventListener('click', () => {
+                
+                // Se já estiver gravando, pára a gravação atual
+                if (isRecording && recognition) {
+                    try { recognition.stop(); } catch(e) {}
+                    return;
                 }
-            });
+                
+                // Sempre cria uma nova instância para evitar "congelamentos" da API
+                recognition = new SpeechRecognition();
+                recognition.lang = 'es-ES'; 
+                recognition.interimResults = false;
 
-            recognition.addEventListener('result', (evento) => {
-                const fraseFalada = evento.results[0][0].transcript;
-                statusTexto.innerText = `Você disse: "${fraseFalada}"`;
-                statusTexto.style.color = "#555";
-                analisarEImprimirNaTela(fraseAtualEspanhol, fraseFalada);
-            });
+                recognition.onstart = () => {
+                    isRecording = true;
+                    dom.btnGravar.classList.add('gravando');
+                    dom.lblGravar.innerText = "Parar"; 
+                    dom.status.innerText = "🎤 Escuchando... ¡Habla ahora!";
+                    dom.status.style.color = "var(--accent-blue)"; 
+                    dom.resultado.innerHTML = "";
+                };
 
-            // Tratamento de erro silencioso para evitar travamento
-            recognition.addEventListener('error', (evento) => {
-                statusTexto.innerText = "❌ No entendí. Inténtalo de nuevo.";
-                statusTexto.style.color = "#dc3545";
+                recognition.onend = () => {
+                    isRecording = false;
+                    dom.btnGravar.classList.remove('gravando');
+                    dom.lblGravar.innerText = "Falar";
+                };
+
+                recognition.onresult = (evento) => {
+                    const fraseFalada = evento.results[0][0].transcript;
+                    dom.status.innerText = `Você pronunciou: "${fraseFalada}"`;
+                    dom.status.style.color = "var(--text-secondary)";
+                    analisarPronuncia(fraseAtualEspanhol, fraseFalada);
+                };
+
+                recognition.onerror = (evento) => {
+                    dom.status.innerText = "❌ No entendí o hubo un error. Inténtalo de nuevo.";
+                    dom.status.style.color = "var(--error-red)";
+                    isRecording = false;
+                    dom.btnGravar.classList.remove('gravando');
+                    dom.lblGravar.innerText = "Falar";
+                };
+
+                try { recognition.start(); } catch(e) {}
             });
 
         } else {
-            statusTexto.innerText = "Seu navegador não suporta voz.";
+            dom.status.innerText = "⚠️ Seu navegador não suporta reconhecimento de voz.";
+            dom.btnGravar.style.display = "none";
         }
 
-        // LÓGICA DE CORREÇÃO (A grande diferença está AQUI)
-        function analisarEImprimirNaTela(alvo, falada) {
+        // --- LÓGICA DE COMPARAÇÃO DE PRONÚNCIA ---
+        function analisarPronuncia(alvo, falada) {
             
-            // FUNÇÃO MÁGICA PARA O ESPANHOL: Remove ¡, ¿, pontuações e ACENTOS!
+            // Remove pontuações invertidas e acentos magicamente para o computador entender!
             const limparTexto = (texto) => {
                 return texto.toLowerCase()
-                            .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove os acentos
-                            .replace(/[.,!?¡¿]/g, "") // remove toda a pontuação
+                            .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                            .replace(/[.,!?¡¿]/g, "")
                             .trim();
             };
-
-            let alvoLimpo = limparTexto(alvo);
-            let faladaLimpa = limparTexto(falada);
-
-            let palavrasOriginais = alvo.split(" "); // Para manter as pontuações e maiúsculas na tela
-            let palavrasAlvo = alvoLimpo.split(" ");
-            let palavrasFaladas = faladaLimpa.split(" ");
+            
+            let alvoLimpo = limparTexto(alvo).split(" ");
+            let faladaLimpa = limparTexto(falada).split(" ");
+            let palabrasOriginais = alvo.split(" "); // Guarda original para mostrar na tela
 
             let htmlFinal = "";
-            let acertouTudo = true; 
+            let acertouTudo = true;
 
-            for (let i = 0; i < palavrasAlvo.length; i++) {
-                let palavraCerta = palavrasAlvo[i];
-                let palavraDita = palavrasFaladas[i] || "";
-                let palavraVisual = palabrasOriginais[i];
+            for (let i = 0; i < alvoLimpo.length; i++) {
+                let pCerta = alvoLimpo[i];
+                let pDita = faladaLimpa[i] || ""; 
+                let pVisual = palabrasOriginais[i] || pCerta; // Pega a palavra original com pontuação/acento
 
-                if (palavraCerta === palavraDita) {
-                    htmlFinal += `<span class="correto">${palavraVisual} </span>`;
+                if (pCerta === pDita) {
+                    htmlFinal += `<span class="correto">${pVisual} </span>`;
                 } else {
-                    htmlFinal += `<span class="errado">${palavraVisual} </span>`;
-                    acertouTudo = false; 
+                    htmlFinal += `<span class="errado">${pVisual} </span>`;
+                    acertouTudo = false;
                 }
             }
 
-            resultadoTela.innerHTML = htmlFinal;
+            dom.resultado.innerHTML = htmlFinal;
 
             if (acertouTudo) {
-                statusTexto.innerText = "🎉 ¡Perfecto! ¡Lección completada!";
-                statusTexto.style.color = "#28a745";
+                tocarSomAcerto(); 
+                dom.status.innerText = "🎉 ¡Pronunciación Perfecta! Gold Star!";
+                dom.status.style.color = "var(--success-green)";
                 
                 if (!progressoSalvo.includes(indiceAtual)) {
                     progressoSalvo.push(indiceAtual);
-                    localStorage.setItem('progressoEspanholV2', JSON.stringify(progressoSalvo));
+                    localStorage.setItem('progressoEspanholProV3', JSON.stringify(progressoSalvo));
                     document.getElementById("btn-" + indiceAtual).classList.add('concluido');
                 }
                 
                 setTimeout(() => {
                     if(indiceAtual < listaDeFrases.length - 1) {
                         mudarFrase(indiceAtual + 1);
-                        // Rola os botões para baixo se a lição passar do limite visível
-                        document.getElementById("btn-" + (indiceAtual)).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    } else {
+                        dom.status.innerText = "🏆 ¡FELICIDADES! ¡Completaste todo el curso!";
                     }
-                }, 1500);
+                }, 1800);
             } else {
-                statusTexto.innerText = "❌ ¡Ups! Has fallado algunas palabras. Inténtalo de nuevo.";
-                statusTexto.style.color = "#dc3545";
+                tocarSomErro(); 
+                dom.status.innerText = "❌ Algunas palabras fallaron. ¡Inténtalo de nuevo!";
+                dom.status.style.color = "var(--error-red)";
             }
         }
+
+        inicializarApp();
     </script>
 </body>
 </html>
