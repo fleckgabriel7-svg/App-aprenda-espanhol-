@@ -2,612 +2,370 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Espanhol Pro">
-    <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Tour_Eiffel_Wikimedia_Commons.jpg/150px-Tour_Eiffel_Wikimedia_Commons.jpg">
-
-    <title>Espanhol Pro - Domine a Pronúncia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App de Espanhol - 250 Níveis</title>
     <style>
-        /* CSS RESET & VARIAVEIS DE CORES DARK */
-        :root {
-            --bg-page: #050507; 
-            --app-bg: #121216; 
-            --frame-border: #2a2a30; 
-            --border-color: rgba(255, 255, 255, 0.08);
-            --text-primary: #ffffff;
-            --text-secondary: #9aa0a6;
-            --accent-blue: #00e5ff; 
-            --accent-hover: #00b8d4;
-            --success-green: #2ecc71;
-            --error-red: #e74c3c;
-            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
         body {
-            font-family: var(--font-main);
-            background-color: var(--bg-page);
-            color: var(--text-primary);
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .app-container {
-            background-color: var(--app-bg);
-            width: 100%;
-            max-width: 420px; 
-            height: 100%;
-            max-height: 850px; 
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
-        }
-
-        header {
-            padding: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
-            border-bottom: 1px solid var(--border-color);
-            background: rgba(255,255,255,0.01);
+            background-color: #f4f4f9;
+            padding: 20px;
         }
-
-        header h1 { font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--text-primary); }
-        header p { font-size: 11px; color: var(--accent-blue); margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
-
-        .quadro-wrapper {
-            padding: 20px 20px 0 20px;
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            max-width: 700px; 
+            margin: 0 auto;
         }
-
-        .quadro-imagem {
-            width: 100%;
-            height: 190px; 
-            border-radius: 16px; 
-            border: 6px solid var(--frame-border); 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(0,0,0,0.3);
-            background-color: #2a2a30; 
-            background-size: cover;
-            background-position: center;
-            transition: background-image 0.8s ease-in-out;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .tag-local {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-            background: rgba(0,0,0,0.7);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #fff;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.15);
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-
-        .display-frase {
-            flex: 1; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 15px 25px;
-            text-align: center;
-        }
-
-        .frase-alvo { font-size: 26px; font-weight: 800; line-height: 1.3; color: var(--text-primary); margin-bottom: 8px; word-wrap: break-word; }
-        .traducao { font-size: 16px; color: var(--accent-blue); font-style: italic; font-weight: 500; margin-bottom: 20px; opacity: 0.9; }
         
-        .feedback-area {
-            min-height: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .resultado { font-size: 22px; font-weight: 700; }
-        .correto { color: var(--success-green); }
-        .errado { color: var(--error-red); text-decoration: underline; text-underline-offset: 4px; }
-        .status-msg { font-size: 13px; color: var(--text-secondary); font-weight: 600; margin-top: 8px;}
-
-        .controles-container {
-            padding: 10px 20px 20px 20px;
-        }
-
-        .controles-voz { display: flex; justify-content: center; gap: 12px; }
-
-        .btn-action {
-            flex: 1;
-            border: none;
-            padding: 14px 0;
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            color: #fff;
-        }
-
-        .btn-ouvir { background-color: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-primary); }
-        .btn-ouvir:hover { background-color: rgba(255,255,255,0.1); }
-
-        .btn-gravar { background-color: var(--accent-blue); box-shadow: 0 4px 15px rgba(0,229,255,0.25); color: #000; }
-        .btn-gravar:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
-        .btn-gravar.gravando { animation: pulsarRed 1.5s infinite; background-color: var(--error-red); color: #fff; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4); }
-
-        @keyframes pulsarRed {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.03); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .painel-rodape {
-            background: rgba(0,0,0,0.4);
-            border-top: 1px solid var(--border-color);
-            padding: 15px;
-        }
-
-        .titulo-licoes { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; font-weight: bold; padding-left: 5px;}
-
         .painel-botoes {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr); 
+            display: flex;
+            flex-wrap: wrap;
             gap: 8px;
-            max-height: 130px; 
-            overflow-y: auto;
-            padding-right: 5px; 
+            justify-content: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            max-height: 200px;
+            overflow-y: auto; 
         }
         
-        .painel-botoes::-webkit-scrollbar { width: 4px; }
-        .painel-botoes::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
-
         .botao-numero {
-            background-color: rgba(255,255,255,0.04);
-            color: var(--text-secondary);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 10px 0;
-            border-radius: 8px;
+            background-color: #e0e0e0;
+            color: #333;
+            border: 2px solid transparent;
+            padding: 8px 12px;
+            border-radius: 5px;
             cursor: pointer;
-            font-weight: 700;
+            font-weight: bold;
             font-size: 14px;
-            transition: all 0.2s ease;
-            text-align: center;
+            width: 48px;
         }
+        .botao-numero:hover { background-color: #d0d0d0; }
+        
+        .botao-numero.ativo { border: 2px solid #000; transform: scale(1.1); } 
+        .botao-numero.concluido { background-color: #28a745; color: white; } 
 
-        .botao-numero:hover { background-color: rgba(255,255,255,0.1); color: var(--text-primary); }
-        .botao-numero.ativo { border-color: var(--accent-blue); color: var(--accent-blue); background: rgba(0,229,255,0.08); }
-        .botao-numero.concluido { background-color: var(--success-green); color: #fff; border-color: transparent; }
+        .frase-alvo { font-size: 28px; font-weight: bold; color: #333; margin-bottom: 5px; }
+        .traducao { font-size: 18px; color: #666; font-style: italic; margin-bottom: 25px; }
+        
+        .controles-voz { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; }
 
-        @media (min-height: 850px) {
-            .app-container { height: 95vh; }
-        }
+        .btn-gravar { background-color: #007BFF; color: white; border: none; padding: 15px 25px; font-size: 18px; border-radius: 8px; cursor: pointer; }
+        .btn-gravar:hover { background-color: #0056b3; }
+
+        .btn-ouvir { background-color: #17a2b8; color: white; border: none; padding: 15px 25px; font-size: 18px; border-radius: 8px; cursor: pointer; }
+        .btn-ouvir:hover { background-color: #138496; }
+        
+        .feedback { margin-top: 15px; font-size: 16px; color: #555; font-weight: bold;}
+        .resultado { font-size: 24px; margin-top: 20px; font-weight: bold; }
+        
+        .correto { color: #28a745; }
+        .errado { color: #dc3545; text-decoration: underline; }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
+    <div class="container">
+        <h3>Selecione a lição (Verde = Concluída):</h3>
+        <div class="painel-botoes" id="painelBotoes"></div>
+
+        <div class="frase-alvo" id="fraseAlvo">...</div>
+        <div class="traducao" id="traducaoPt">...</div>
         
-        <header>
-            <h1>Espanhol Pro</h1>
-            <p>Habla con claridad, viaja por el mundo</p>
-        </header>
-
-        <div class="quadro-wrapper">
-            <div class="quadro-imagem" id="quadroImagem">
-                <div id="tagLocal" class="tag-local">📍 Cargando...</div>
-            </div>
+        <div class="controles-voz">
+            <button class="btn-ouvir" id="btnOuvir">🔊 Ouvir</button>
+            <button class="btn-gravar" id="btnGravar">🎤 Falar</button>
         </div>
 
-        <div class="display-frase">
-            <div class="frase-alvo" id="fraseAlvo">...</div>
-            <div class="traducao" id="traducaoPt">...</div>
-            
-            <div class="feedback-area">
-                <div class="resultado" id="resultadoTela"></div>
-                <div class="status-msg" id="status">Seleccione una lección abajo.</div>
-            </div>
-        </div>
-
-        <div class="controles-container">
-            <div class="controles-voz">
-                <button class="btn-action btn-ouvir" id="btnOuvir">
-                    <i>🔊</i> Ouvir
-                </button>
-                <button class="btn-action btn-gravar" id="btnGravar">
-                    <i id="mic-icon">🎤</i> <span id="lbl-gravar">Falar</span>
-                </button>
-            </div>
-        </div>
-
-        <div class="painel-rodape">
-            <div class="titulo-licoes">Módulos de Estudo</div>
-            <div class="painel-botoes" id="painelBotoes"></div>
-        </div>
-
+        <p class="feedback" id="status">Aperte em Falar e leia a frase.</p>
+        <div class="resultado" id="resultadoTela"></div>
     </div>
 
     <script>
-        const imagensDeFundo = [
-            { url: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=800&q=80', nome: 'Torre Eiffel, París' },
-            { url: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=800&q=80', nome: 'Nueva York, EE. UU.' },
-            { url: 'https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80', nome: 'Tokio, Japón' },
-            { url: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80', nome: 'Coliseo, Roma' },
-            { url: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80', nome: 'Londres, Inglaterra' },
-            { url: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=800&q=80', nome: 'Río de Janeiro, Brasil' },
-            { url: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80', nome: 'Ópera de Sídney' },
-            { url: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80', nome: 'Kioto, Japón' },
-            { url: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80', nome: 'Taj Mahal, India' },
-            { url: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80', nome: 'Dubái, EAU' },
-            { url: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80', nome: 'Santorini, Grecia' },
-            { url: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=800&q=80', nome: 'Venecia, Italia' },
-            { url: 'https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=800&q=80', nome: 'Machu Picchu, Perú' },
-            { url: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80', nome: 'Muralla China' },
-            { url: 'https://images.unsplash.com/photo-1539667468225-eebb663053e6?auto=format&fit=crop&w=800&q=80', nome: 'Pirámides de Guiza' },
-            { url: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=800&q=80', nome: 'Golden Gate, EE. UU.' },
-            { url: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80', nome: 'Ruta 66, EE. UU.' },
-            { url: 'https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&w=800&q=80', nome: 'Hollywood, EE. UU.' },
-            { url: 'https://images.unsplash.com/photo-1552035489-3974ee0f04eb?auto=format&fit=crop&w=800&q=80', nome: 'Ámsterdam, Holanda' },
-            { url: 'https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?auto=format&fit=crop&w=800&q=80', nome: 'Estambul, Turquía' },
-            { url: 'https://images.unsplash.com/photo-1526649661456-89c7ed4d00b8?auto=format&fit=crop&w=800&q=80', nome: 'Singapur' },
-            { url: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80', nome: 'Hong Kong' },
-            { url: 'https://images.unsplash.com/photo-1560930950-5ce20d36906f?auto=format&fit=crop&w=800&q=80', nome: 'Berlín, Alemania' },
-            { url: 'https://images.unsplash.com/photo-1583422409516-15ec0a05c317?auto=format&fit=crop&w=800&q=80', nome: 'Barcelona, España' },
-            { url: 'https://images.unsplash.com/photo-1551000673-f9c3c8d3da16?auto=format&fit=crop&w=800&q=80', nome: 'Atenas, Grecia' },
-            { url: 'https://images.unsplash.com/photo-1531366936337-7785a8208447?auto=format&fit=crop&w=800&q=80', nome: 'Aurora Boreal' },
-            { url: 'https://images.unsplash.com/photo-1474015977092-28f09d846b41?auto=format&fit=crop&w=800&q=80', nome: 'Gran Cañón, EE. UU.' },
-            { url: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=800&q=80', nome: 'Alpes Suizos' },
-            { url: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=80', nome: 'Islas Maldivas' },
-            { url: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?auto=format&fit=crop&w=800&q=80', nome: 'Banff, Canadá' },
-            { url: 'https://images.unsplash.com/photo-1579737190987-25e4fbaaa44d?auto=format&fit=crop&w=800&q=80', nome: 'Patagonia, Argentina' },
-            { url: 'https://images.unsplash.com/photo-1454692173233-f4f34c12adad?auto=format&fit=crop&w=800&q=80', nome: 'Desierto del Sahara' },
-            { url: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=800&q=80', nome: 'Cascadas, Islandia' },
-            { url: 'https://images.unsplash.com/photo-1490682143684-14369e18dce8?auto=format&fit=crop&w=800&q=80', nome: 'Monte Fuji, Japón' },
-            { url: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=800&q=80', nome: 'Yellowstone, EE. UU.' },
-            { url: 'https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=800&q=80', nome: 'Safari, Kenia' },
-            { url: 'https://images.unsplash.com/photo-1553531384-cc64ac80f931?auto=format&fit=crop&w=800&q=80', nome: 'Monte Everest' },
-            { url: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?auto=format&fit=crop&w=800&q=80', nome: 'Cataratas del Iguazú' },
-            { url: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=800&q=80', nome: 'Selva Amazónica' },
-            { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80', nome: 'Playa del Caribe' },
-            { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80', nome: 'Fiordos, Noruega' },
-            { url: 'https://images.unsplash.com/photo-1438786657495-640937046d18?auto=format&fit=crop&w=800&q=80', nome: 'Salar de Uyuni' },
-            { url: 'https://images.unsplash.com/photo-1502021680123-db54070a72fb?auto=format&fit=crop&w=800&q=80', nome: 'Capadocia, Turquía' },
-            { url: 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=800&q=80', nome: 'Cordillera de los Andes' },
-            { url: 'https://images.unsplash.com/photo-1498307833015-e7b400441eb8?auto=format&fit=crop&w=800&q=80', nome: 'Islas Galápagos' },
-            { url: 'https://images.unsplash.com/photo-1506015391300-4802dc74de2e?auto=format&fit=crop&w=800&q=80', nome: 'Bahía de Ha Long' },
-            { url: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80', nome: 'Selva Negra, Alemania' },
-            { url: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80', nome: 'Kilimanjaro, Tanzania' },
-            { url: 'https://images.unsplash.com/photo-1541427573-0305886e0044?auto=format&fit=crop&w=800&q=80', nome: 'Yosemite, EE. UU.' },
-            { url: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=800&q=80', nome: 'Playa, Maldivas' }
-        ];
-
+        // BANCO DE DADOS - 250 FRASES (Básico 1-100, Médio 101-250)
         const listaDeFrases = [
-            { es: "Hola.", pt: "Olá." },
+            // --- BÁSICO: Saudações e Primeiros Contatos (1-25) ---
+            { es: "Hola, ¿cómo estás?", pt: "Olá, como vai você?" },
             { es: "Buenos días.", pt: "Bom dia." },
+            { es: "Buenas tardes.", pt: "Boa tarde." },
             { es: "Buenas noches.", pt: "Boa noite." },
-            { es: "Por favor.", pt: "Por favor." },
-            { es: "Gracias.", pt: "Obrigado(a)." },
-            { es: "De nada.", pt: "De nada." },
-            { es: "Sí.", pt: "Sim." },
-            { es: "No.", pt: "Não." },
-            { es: "Con permiso.", pt: "Com licença / Desculpe." },
-            { es: "Lo siento.", pt: "Me desculpe." },
-            { es: "¿Hablas inglés?", pt: "Você fala inglês?" },
-            { es: "Hablo un poco.", pt: "Eu falo um pouco." },
-            { es: "No entiendo.", pt: "Eu não entendo." },
-            { es: "¿Podrías repetir?", pt: "Poderia repetir?" },
-            { es: "Habla despacio.", pt: "Fale devagar." },
             { es: "¿Cuál es tu nombre?", pt: "Qual é o seu nome?" },
-            { es: "Mi nombre es John.", pt: "Meu nome é John." },
-            { es: "Mucho gusto.", pt: "Prazer em conhecer você." },
-            { es: "¿Cómo estás?", pt: "Como vai você?" },
-            { es: "Estoy bien.", pt: "Eu estou bem." },
+            { es: "Mi nombre es Carlos.", pt: "Meu nome é Carlos." },
+            { es: "Mucho gusto.", pt: "Prazer em conhecê-lo." },
             { es: "¿De dónde eres?", pt: "De onde você é?" },
-            { es: "Soy de Brasil.", pt: "Eu sou do Brasil." },
+            { es: "Soy de Brasil.", pt: "Sou do Brasil." },
             { es: "¿Cuántos años tienes?", pt: "Quantos anos você tem?" },
-            { es: "Estoy feliz.", pt: "Estou feliz." },
-            { es: "Estoy cansado.", pt: "Estou cansado(a)." },
-            { es: "Tengo hambre.", pt: "Estou com fome." },
-            { es: "Tengo sed.", pt: "Estou com sede." },
-            { es: "Necesito ayuda.", pt: "Preciso de ajuda." },
+            { es: "Tengo veinte años.", pt: "Tenho vinte anos." },
+            { es: "¿Hablas español?", pt: "Você fala espanhol?" },
+            { es: "Hablo un poco.", pt: "Falo um pouco." },
+            { es: "No entiendo.", pt: "Não entiendo." },
+            { es: "Por favor, habla más despacio.", pt: "Por favor, fale mais devagar." },
+            { es: "¿Puedes repetir, por favor?", pt: "Pode repetir, por favor?" },
+            { es: "Muchas gracias.", pt: "Muito obrigado(a)." },
+            { es: "De nada.", pt: "De nada." },
+            { es: "Con permiso.", pt: "Com licença." },
+            { es: "Lo siento mucho.", pt: "Sinto muito." },
+            { es: "Sí, por supuesto.", pt: "Sim, claro." },
+            { es: "No, gracias.", pt: "Não, obrigado(a)." },
+            { es: "¡Hasta luego!", pt: "Até logo!" },
+            { es: "¡Hasta mañana!", pt: "Até amanhã!" },
+            { es: "Adiós.", pt: "Adeus / Tchau." },
+
+            // --- BÁSICO: Direções, Transportes e Compras (26-60) ---
             { es: "¿Dónde está el baño?", pt: "Onde fica o banheiro?" },
-            { es: "¿Cuánto cuesta?", pt: "Quanto custa?" },
-            { es: "Es caro.", pt: "É caro." },
-            { es: "Es barato.", pt: "É barato." },
+            { es: "¿Cuánto cuesta esto?", pt: "Quanto custa isso?" },
+            { es: "Es muy caro.", pt: "É muito caro." },
+            { es: "¿Aceptan tarjeta de crédito?", pt: "Aceitam cartão de crédito?" },
+            { es: "Necesito ir al supermercado.", pt: "Preciso ir ao supermercado." },
             { es: "Quiero comprar esto.", pt: "Quero comprar isso." },
-            { es: "¿Aceptan tarjetas?", pt: "Vocês aceitam cartão?" },
-            { es: "¿Dónde está el banco?", pt: "Onde fica o banco?" },
-            { es: "¿Dónde está el hospital?", pt: "Onde fica o hospital?" },
-            { es: "Llame a una ambulancia.", pt: "Chame uma ambulância." },
-            { es: "Llame a la policía.", pt: "Chame a polícia." },
-            { es: "Perdí mi pasaporte.", pt: "Perdi meu passaporte." },
-            { es: "Perdí mi bolso.", pt: "Perdi minha bolsa." },
-            { es: "¿Dónde está el aeropuerto?", pt: "Onde fica o aeroporto?" },
-            { es: "Necesito un taxi.", pt: "Preciso de um táxi." },
-            { es: "Gire a la izquierda.", pt: "Vire à esquerda." },
-            { es: "Gire a la derecha.", pt: "Vire à direita." },
-            { es: "Siga derecho.", pt: "Siga direto." },
-            { es: "Pare aquí.", pt: "Pare aqui." },
+            { es: "Busco una farmacia.", pt: "Procuro uma farmácia." },
+            { es: "¿A qué hora abre?", pt: "A que horas abre?" },
+            { es: "Abre a las ocho.", pt: "Abre às oito." },
             { es: "¿Qué hora es?", pt: "Que horas são?" },
-            { es: "Es temprano.", pt: "É cedo." },
-            { es: "Es tarde.", pt: "É tarde." },
-            { es: "Hoy es lunes.", pt: "Hoje é segunda-feira." },
-            { es: "Mañana es martes.", pt: "Amanhã é terça-feira." },
-            { es: "Ayer fue domingo.", pt: "Ontem foi domingo." },
-            { es: "Me encanta viajar.", pt: "Amo viajar." },
-            { es: "Quiero comer.", pt: "Quero comer." },
-            { es: "La comida es buena.", pt: "A comida está boa." },
+            { es: "Son las tres de la tarde.", pt: "São três da tarde." },
+            { es: "Tengo hambre.", pt: "Estou com fome." },
+            { es: "Tengo mucha sed.", pt: "Estou com muita sede." },
+            { es: "Un café, por favor.", pt: "Um café, por favor." },
             { es: "La cuenta, por favor.", pt: "A conta, por favor." },
-            { es: "Agua, por favor.", pt: "Água, por favor." },
-            { es: "Quiero café.", pt: "Quero café." },
-            { es: "Sin azúcar.", pt: "Sem açúcar." },
-            { es: "Soy alérgico.", pt: "Sou alérgico(a)." },
-            { es: "Mesa para dos.", pt: "Mesa para dois." },
-            { es: "El menú, por favor.", pt: "O cardápio, por favor." },
-            { es: "Delicioso.", pt: "Delicioso." },
-            { es: "Estoy satisfecho.", pt: "Estou satisfeito(a)." },
-            { es: "¿Dónde está el hotel?", pt: "Onde fica o hotel?" },
+            { es: "La comida está deliciosa.", pt: "A comida está deliciosa." },
+            { es: "No como carne.", pt: "Não como carne." },
+            { es: "¿Dónde está la estación de tren?", pt: "Onde fica a estação de trem?" },
+            { es: "Gira a la izquierda.", pt: "Vire à esquerda." },
+            { es: "Gira a la derecha.", pt: "Vire à direita." },
+            { es: "Sigue todo recto.", pt: "Siga reto." },
+            { es: "Está muy cerca.", pt: "Está muito perto." },
+            { es: "Está muy lejos.", pt: "Está muito longe." },
+            { es: "Necesito un taxi.", pt: "Preciso de um táxi." },
+            { es: "Quiero un billete de autobús.", pt: "Quero uma passagem de ônibus." },
+            { es: "Mi equipaje está perdido.", pt: "Minha bagagem está perdida." },
             { es: "Tengo una reserva.", pt: "Tenho uma reserva." },
-            { es: "La llave de la habitación.", pt: "Chave do quarto, por favor." },
-            { es: "¿Hay wifi?", pt: "Tem Wi-Fi?" },
-            { es: "¿Cuál es la contraseña?", pt: "Qual a senha?" },
-            { es: "Mi habitación está fría.", pt: "Meu quarto está frio." },
-            { es: "Limpie la habitación.", pt: "Limpe o quarto." },
-            { es: "Despiértame.", pt: "Me acorde." },
-            { es: "¿Dónde está la playa?", pt: "Onde fica a praia?" },
-            { es: "Está soleado.", pt: "Está ensolarado." },
-            { es: "Está lloviendo.", pt: "Está chovendo." },
-            { es: "Hace calor.", pt: "Está quente." },
-            { es: "Hace frío.", pt: "Está frio." },
-            { es: "Hermoso día.", pt: "Lindo dia." },
-            { es: "Me gusta este lugar.", pt: "Gosto deste lugar." },
-            { es: "Toma una foto.", pt: "Tire uma foto." },
-            { es: "Sonríe.", pt: "Sorria." },
-            { es: "Estoy perdido.", pt: "Estou perdido(a)." },
-            { es: "Ayúdame a encontrar.", pt: "Me ajude a encontrar." },
-            { es: "¿Está lejos?", pt: "É longe?" },
-            { es: "¿Está cerca?", pt: "É perto?" },
-            { es: "Camina una cuadra.", pt: "Ande um quarteirão." },
-            { es: "Estoy listo.", pt: "Estou pronto(a)." },
-            { es: "Vamos.", pt: "Vamos lá." },
-            { es: "Espera un minuto.", pt: "Espere um minuto." },
-            { es: "Date prisa.", pt: "Apresse-se." },
-            { es: "Tómate tu tiempo.", pt: "Leve o tempo que precisar." },
-            { es: "¿Qué es esto?", pt: "O que é isso?" },
-            { es: "¿Quién es ese?", pt: "Quem é aquele(a)?" },
-            { es: "¿Por qué no?", pt: "Por que não?" },
-            { es: "¿Cómo así?", pt: "Como assim?" },
-            { es: "Creo que sí.", pt: "Eu acho que sim." },
-            { es: "Creo que no.", pt: "Eu acho que não." },
-            { es: "Tal vez.", pt: "Talvez." },
-            { es: "Por supuesto.", pt: "Claro." },
-            { es: "Absolutamente.", pt: "Com certeza." },
-            { es: "Estoy de acuerdo.", pt: "Eu concordo." },
-            { es: "No estoy de acuerdo.", pt: "Eu discordo." },
-            { es: "Lo sé.", pt: "Eu sei." },
-            { es: "No lo sé.", pt: "Eu não sei." },
-            { es: "Entiendo.", pt: "Eu entendo." },
-            { es: "Olvídalo.", pt: "Esqueça." },
-            { es: "No hay problema.", pt: "Sem problema." },
-            { es: "Buena suerte.", pt: "Boa sorte." },
-            { es: "Felicidades.", pt: "Parabéns." },
-            { es: "Feliz cumpleaños.", pt: "Feliz aniversário." },
-            { es: "Feliz Navidad.", pt: "Feliz Natal." },
-            { es: "Feliz Año Nuevo.", pt: "Feliz Ano Novo." },
-            { es: "Qué pena.", pt: "Que pena." },
-            { es: "Cuidado.", pt: "Cuidado." },
-            { es: "Ten cuidado.", pt: "Tenha cuidado." },
-            { es: "Mira aquí.", pt: "Olhe aqui." },
-            { es: "Escúchame.", pt: "Escute-me." },
-            { es: "Ven aquí.", pt: "Venha aqui." },
-            { es: "Vete.", pt: "Vá embora." },
-            { es: "Siéntate.", pt: "Sente-se." },
-            { es: "Levántate.", pt: "Levante-se." },
-            { es: "Abre la puerta.", pt: "Abra a porta." },
-            { es: "Cierra la ventana.", pt: "Feche a janela." },
-            { es: "Enciende la luz.", pt: "Ligue a luz." },
-            { es: "Apaga la televisión.", pt: "Desligue a TV." },
-            { es: "Lávate las manos.", pt: "Lave suas mãos." },
-            { es: "Toma una ducha.", pt: "Tome um banho." },
-            { es: "Cepíllate los dientes.", pt: "Escove os dentes." },
-            { es: "Ve a dormir.", pt: "Vá dormir." },
-            { es: "Despierta.", pt: "Acorde." },
-            { es: "Desayuna.", pt: "Tome café da manhã." },
-            { es: "Come tu almuerzo.", pt: "Coma seu almoço." },
-            { es: "La cena está lista.", pt: "O jantar está pronto." },
-            { es: "Me gustan las manzanas.", pt: "Eu gosto de maçãs." },
-            { es: "Odio las cebollas.", pt: "Eu odeio cebolas." },
-            { es: "Esto es dulce.", pt: "Isso é doce." },
-            { es: "Esto es salado.", pt: "Isso é salgado." },
-            { es: "Necesito dinero.", pt: "Preciso de dinheiro." },
-            { es: "No tengo dinero.", pt: "Não tenho dinheiro." },
-            { es: "¿Dónde hay un cajero?", pt: "Onde tem um caixa eletrônico?" },
-            { es: "¿Puedo pedir prestado?", pt: "Posso pegar emprestado?" },
-            { es: "Te lo devolveré.", pt: "Eu pagarei de volta." },
-            { es: "Trabajo aquí.", pt: "Eu trabalho aqui." },
-            { es: "Soy estudiante.", pt: "Sou estudiante." },
-            { es: "Amo mi trabajo.", pt: "Amo meu trabalho." },
-            { es: "Estoy ocupado.", pt: "Estou ocupado(a)." },
-            { es: "Llámame más tarde.", pt: "Me ligue mais tarde." },
-            { es: "Envía un correo.", pt: "Envie um e-mail." },
-            { es: "¿Cuál es tu número?", pt: "Qual o seu número?" },
-            { es: "Mi teléfono está descargado.", pt: "Meu celular descarregou." },
-            { es: "Necesito un cargador.", pt: "Preciso de um carregador." },
-            { es: "Veamos una película.", pt: "Vamos ver um filme." },
-            { es: "Me gusta la música.", pt: "Gosto de música." },
-            { es: "Juego al fútbol.", pt: "Eu jogo futebol." },
-            { es: "Él es mi amigo.", pt: "Ele é meu amigo." },
-            { es: "Ella es mi hermana.", pt: "Ela é minha irmã." },
-            { es: "Ellos están aquí.", pt: "Eles estão aqui." },
-            { es: "Somos familia.", pt: "Nós somos família." },
-            { es: "¿Tienes hijos?", pt: "Você tem filhos?" },
-            { es: "Soy soltero.", pt: "Sou solteiro(a)." },
-            { es: "Estoy casado.", pt: "Sou casado(a)." },
-            { es: "Tengo un perro.", pt: "Tenho um cachorro." },
-            { es: "Tengo un gato.", pt: "Tenho um gato." },
-            { es: "Es una casa hermosa.", pt: "É uma casa linda." },
-            { es: "Este es mi auto.", pt: "Este é meu carro." },
-            { es: "Conduce con cuidado.", pt: "Dirija com segurança." },
-            { es: "El tráfico es malo.", pt: "O trânsito está ruim." },
-            { es: "Estoy manejando.", pt: "Estou dirigindo." },
-            { es: "Estaciona aquí.", pt: "Estacione aqui." },
-            { es: "Necesito gasolina.", pt: "Preciso de gasolina." },
-            { es: "¿Puedes arreglarlo?", pt: "Você pode consertar?" },
-            { es: "Está roto.", pt: "Está quebrado." },
-            { es: "Me siento enfermo.", pt: "Me sinto doente." },
+            { es: "La llave de la habitación, por favor.", pt: "A chave do quarto, por favor." },
+            { es: "¿Cuál es la contraseña del wifi?", pt: "Qual é a senha do wifi?" },
+            { es: "El hotel es muy bonito.", pt: "O hotel é muito bonito." },
+            { es: "Necesito ayuda, por favor.", pt: "Preciso de ajuda, por favor." },
+            { es: "¿Dónde está el hospital?", pt: "Onde fica o hospital?" },
+            { es: "Llama a la policía.", pt: "Chame a polícia." },
+            { es: "He perdido mi pasaporte.", pt: "Perdi meu passaporte." },
             { es: "Me duele la cabeza.", pt: "Minha cabeça dói." },
-            { es: "Necesito un médico.", pt: "Preciso de um médico." },
-            { es: "Tengo fiebre.", pt: "Estou com febre." },
-            { es: "Toma esta medicina.", pt: "Tome este remédio." },
-            { es: "Bebe agua.", pt: "Beba água." },
-            { es: "Descansa bien.", pt: "Descanse bem." },
-            { es: "Me siento mejor.", pt: "Me sinto melhor." },
-            { es: "Es un secreto.", pt: "É um segredo." },
-            { es: "No se lo digas a nadie.", pt: "Não conte." },
-            { es: "Lo prometo.", pt: "Eu prometo." },
-            { es: "Estoy bromeando.", pt: "Estou brincando." },
-            { es: "¿Hablas en serio?", pt: "Você está falando sério?" },
-            { es: "Estoy seguro.", pt: "Tenho certeza." },
-            { es: "Lo dudo.", pt: "Eu duvido." },
-            { es: "En mi opinión.", pt: "Na minha opinião." },
-            { es: "Prefiero el té.", pt: "Prefiro chá." },
-            { es: "Me gustan ambos.", pt: "Gosto de ambos." },
-            { es: "Ninguno de ellos.", pt: "Nenhum deles." },
-            { es: "Todo está bien.", pt: "Tudo está bem." },
-            { es: "Nada que hacer.", pt: "Nada a fazer." },
-            { es: "Algo anda mal.", pt: "Algo está errado." },
-            { es: "En cualquier momento.", pt: "A qualquer hora." },
-            { es: "En cualquier lugar.", pt: "Em cualquier lugar." },
-            { es: "Que alguien ayude.", pt: "Alguém ajude." },
-            { es: "No hay nadie aquí.", pt: "Ninguém está aqui." },
-            { es: "Sonríe siempre.", pt: "Sempre sorria." },
-            { es: "Nunca digas nunca.", pt: "Nunca diga nunca." },
-            { es: "A veces lloro.", pt: "Às vezes eu choro." },
-            { es: "Normalmente leo.", pt: "Geralmente eu leio." },
-            { es: "Rara vez bebo.", pt: "Raramente eu bebo." },
-            { es: "Casi llego.", pt: "Estou quase lá." },
-            { es: "Un momento.", pt: "Só um momento." },
-            { es: "Ahora mismo.", pt: "Agora mesmo." },
-            { es: "Más tarde hoy.", pt: "Mais tarde hoje." },
-            { es: "Tarde o temprano.", pt: "Mais cedo ou mais tarde." },
-            { es: "Antes que nada.", pt: "Primeiro de tudo." },
-            { es: "En conclusión.", pt: "Em conclusão." },
-            { es: "Por otro lado.", pt: "Por outro lado." },
-            { es: "Por cierto.", pt: "A propósito." },
-            { es: "Por ejemplo.", pt: "Por exemplo." },
-            { es: "Tal como.", pt: "Tal como." },
-            { es: "Según.", pt: "De acordo com." },
-            { es: "En lugar de.", pt: "Ao invés de." },
-            { es: "Por tu culpa.", pt: "Por causa de você." },
-            { es: "Gracias a ti.", pt: "Graças a você." },
-            { es: "Debido a la lluvia.", pt: "Devido à chuva." },
-            { es: "A pesar de.", pt: "Apesar de." },
-            { es: "Aunque.", pt: "Mesmo que." },
-            { es: "Aunque llovió.", pt: "Embora tenha chovido." },
-            { es: "Lo antes posible.", pt: "O mais rápido possível." },
-            { es: "Siempre y cuando.", pt: "Contanto que." },
-            { es: "Hasta ahora todo bien.", pt: "Até agora tudo bem." },
-            { es: "Tengo que irme.", pt: "Eu tenho que ir." },
-            { es: "Déjame ver.", pt: "Deixe-me ver." },
-            { es: "Déjame pensar.", pt: "Deixe-me pensar." },
-            { es: "Dame eso.", pt: "Me dê isso." },
-            { es: "Enséñame cómo.", pt: "Me mostre como." },
-            { es: "Dime por qué.", pt: "Me diga por quê." },
-            { es: "Pregúntale a él.", pt: "Pergunte a ele." },
-            { es: "Contesta el teléfono.", pt: "Atenda o telefone." },
-            { es: "Lee el libro.", pt: "Leia o livro." },
-            { es: "Escribe una carta.", pt: "Escreva uma carta." },
-            { es: "Aprende español.", pt: "Aprenda espanhol." },
-            { es: "Practica todos los días.", pt: "Pratique todos os dias." },
-            { es: "No te rindas.", pt: "Não desista." },
-            { es: "Tú puedes hacerlo.", pt: "Você consegue." },
-            { es: "Cree en ti mismo.", pt: "Acredite em si mesmo." },
-            { es: "Sueña en grande.", pt: "Sonhe grande." },
-            { es: "Trabaja duro.", pt: "Trabalhe duro." },
-            { es: "Disfruta la vida.", pt: "Aproveite a vida." }
+
+            // --- BÁSICO: Ações, Pessoas e Sentimentos (61-100) ---
+            { es: "Estoy muy cansado.", pt: "Estou muito cansado." },
+            { es: "Estoy muy feliz hoy.", pt: "Estou muito feliz hoje." },
+            { es: "Ella es mi mejor amiga.", pt: "Ela é minha melhor amiga." },
+            { es: "Él es una buena persona.", pt: "Ele é uma boa pessoa." },
+            { es: "Nosotros vamos a casa.", pt: "Nós vamos para casa." },
+            { es: "¿Qué estás haciendo?", pt: "O que você está fazendo?" },
+            { es: "Estoy trabajando ahora mismo.", pt: "Estou trabalhando agora mesmo." },
+            { es: "Necesito estudiar español.", pt: "Preciso estudar espanhol." },
+            { es: "Esto es muy difícil.", pt: "Isso é muito difícil." },
+            { es: "Esto es muy fácil.", pt: "Isso é muito fácil." },
+            { es: "Olvidé mis llaves.", pt: "Esqueci minhas chaves." },
+            { es: "Abre la puerta, por favor.", pt: "Abra a porta, por favor." },
+            { es: "Cierra la ventana.", pt: "Feche a janela." },
+            { es: "Mira ese coche.", pt: "Olhe aquele carro." },
+            { es: "¿Por qué estás llorando?", pt: "Por que você está chorando?" },
+            { es: "Porque estoy triste.", pt: "Porque estou triste." },
+            { es: "¿Cuándo es tu cumpleaños?", pt: "Quando é o seu aniversário?" },
+            { es: "Mi cumpleaños es en mayo.", pt: "Meu aniversário é em maio." },
+            { es: "¿Cuál prefieres?", pt: "Qual você prefere?" },
+            { es: "Prefiero el color azul.", pt: "Prefiro a cor azul." },
+            { es: "¿Quién es ese hombre?", pt: "Quem é aquele homem?" },
+            { es: "Es mi hermano mayor.", pt: "É meu irmão mais velho." },
+            { es: "¿Cómo se escribe eso?", pt: "Como se escreve isso?" },
+            { es: "Necesito dormir un poco.", pt: "Preciso dormir um pouco." },
+            { es: "Despierta temprano mañana.", pt: "Acorde cedo amanhã." },
+            { es: "Me estoy duchando.", pt: "Estou tomando banho." },
+            { es: "Cepíllate los dientes.", pt: "Escove os dentes." },
+            { es: "Amo a mi familia.", pt: "Amo minha família." },
+            { es: "Todo va a estar bien.", pt: "Tudo vai ficar bem." },
+            { es: "Nunca te rindas.", pt: "Nunca desista." },
+            { es: "Lo estás haciendo muy bien.", pt: "Você está indo muito bem." },
+            { es: "Vamos a intentarlo de nuevo.", pt: "Vamos tentar de novo." },
+            { es: "La práctica hace al maestro.", pt: "A prática leva à perfeição." },
+            { es: "Me gusta escuchar música.", pt: "Gosto de ouvir música." },
+            { es: "¿Cuál es tu película favorita?", pt: "Qual é o seu filme favorito?" },
+            { es: "Hace mucho calor hoy.", pt: "Faz muito calor hoje." },
+            { es: "Está lloviendo afuera.", pt: "Está chovendo lá fora." },
+            { es: "Tengo un perro y un gato.", pt: "Tenho um cachorro e um gato." },
+            { es: "Vamos a la playa.", pt: "Vamos à praia." },
+            { es: "Me encanta leer libros.", pt: "Adoro ler livros." },
+
+            // --- MÉDIO: Frases Mais Longas e Contextuais (101-150) ---
+            { es: "Creo que va a llover esta tarde.", pt: "Acho que vai chover esta tarde." },
+            { es: "¿Te gustaría venir al cine con nosotros?", pt: "Você gostaria de vir ao cinema conosco?" },
+            { es: "No estoy seguro de lo que quieres decir.", pt: "Não tenho certeza do que você quer dizer." },
+            { es: "Me encantaría ir, pero tengo mucho trabajo.", pt: "Eu adoraria ir, mas tenho muito trabalho." },
+            { es: "Si tienes alguna duda, por favor dímelo.", pt: "Se você tiver alguma dúvida, por favor me diga." },
+            { es: "El restaurante estaba lleno, así que fuimos a otro.", pt: "O restaurante estava cheio, então fomos a outro." },
+            { es: "Me parece que esta es la mejor opción.", pt: "Me parece que esta é a melhor opção." },
+            { es: "¿Podrías traerme un vaso de agua con hielo?", pt: "Você poderia me trazer um copo d'água com gelo?" },
+            { es: "La reunión de mañana ha sido cancelada.", pt: "A reunião de amanhã foi cancelada." },
+            { es: "Siempre me levanto a las seis de la mañana.", pt: "Sempre me levanto às seis da manhã." },
+            { es: "Ayer fuimos al parque y después cenamos fuera.", pt: "Ontem fomos ao parque y depois jantamos fora." },
+            { es: "Mañana tengo que llevar el coche al taller.", pt: "Amanhã tenho que levar o carro à oficina." },
+            { es: "Estoy aprendiendo español porque quiero viajar a España.", pt: "Estou aprendendo espanhol porque quero viajar para a Espanha." },
+            { es: "El paisaje desde la montaña es realmente impresionante.", pt: "A paisagem da montanha é realmente impressionante." },
+            { es: "Por favor, llámame cuando llegues a casa.", pt: "Por favor, me ligue quando chegar em casa." },
+            { es: "No puedo creer que ya sea diciembre.", pt: "Não posso acreditar que já é dezembro." },
+            { es: "Nos conocimos en la universidad hace cinco años.", pt: "Nos conhecemos na universidade há cinco anos." },
+            { es: "He estado buscando mis gafas durante media hora.", pt: "Estive procurando meus óculos por meia hora." },
+            { es: "Me gustaría reservar una mesa para cuatro personas.", pt: "Gostaria de reservar uma mesa para quatro pessoas." },
+            { es: "El vuelo se ha retrasado debido al mal tiempo.", pt: "O voo foi atrasado devido ao mau tempo." },
+            { es: "Este libro es mucho más interesante que el otro.", pt: "Este livro é muito mais interessante que o outro." },
+            { es: "Deberías abrigarte bien, hace mucho frío hoy.", pt: "Você deveria se agasalhar bem, faz muito frio hoje." },
+            { es: "No me acuerdo de dónde puse las llaves del coche.", pt: "Não me lembro onde coloquei as chaves do carro." },
+            { es: "¿Te importa si abro un poco la ventana?", pt: "Você se importa se eu abrir um pouco a janela?" },
+            { es: "Estoy de acuerdo contigo en casi todo.", pt: "Estou de acordo com você em quase tudo." },
+            { es: "Me cuesta mucho levantarme temprano los lunes.", pt: "Custa-me muito levantar cedo às segundas." },
+            { es: "El médico me recomendó hacer más ejercicio.", pt: "O médico me recomendou fazer mais exercícios." },
+            { es: "¿Has estado alguna vez en América del Sur?", pt: "Você já esteve alguma vez na América do Sul?" },
+            { es: "Todavía no he terminado de leer el periódico.", pt: "Ainda não terminei de ler o jornal." },
+            { es: "Vamos a organizar una fiesta sorpresa para su cumpleaños.", pt: "Vamos organizar uma festa surpresa para o aniversário dele." },
+            { es: "La próxima semana empezaré un nuevo proyecto.", pt: "Na próxima semana começarei um novo projeto." },
+            { es: "Disculpe, ¿sabe si el banco está abierto hoy?", pt: "Com licença, sabe se o banco está aberto hoje?" },
+            { es: "Tenemos que darnos prisa si no queremos perder el tren.", pt: "Temos que nos apressar se não quisermos perder o trem." },
+            { es: "La camisa azul te queda mejor que la roja.", pt: "A camisa azul fica melhor em você que a vermelha." },
+            { es: "Me gustaría alquilar un coche por tres días.", pt: "Gostaria de alugar um carro por três dias." },
+            { es: "Este fin de semana vamos a visitar a mis abuelos.", pt: "Neste fim de semana vamos visitar meus avós." },
+            { es: "He olvidado comprar leche en el supermercado.", pt: "Esqueci de comprar leite no supermercado." },
+            { es: "La película de anoche fue bastante aburrida.", pt: "O filme de ontem à noite foi bastante chato." },
+            { es: "No sé qué pedir, el menú es muy variado.", pt: "Não sei o que pedir, o cardápio é muito variado." },
+            { es: "Es importante mantener una dieta equilibrada.", pt: "É importante manter uma dieta equilibrada." },
+            { es: "El tráfico en esta ciudad es insoportable.", pt: "O trânsito nesta cidade é insuportável." },
+            { es: "¿Cuánto tiempo se tarda en llegar al aeropuerto?", pt: "Quanto tempo demora para chegar ao aeroporto?" },
+            { es: "Prefiero vivir en el campo que en la ciudad.", pt: "Prefiro morar no campo do que na cidade." },
+            { es: "Necesito un billete de ida y vuelta a Madrid.", pt: "Preciso de uma passagem de ida e volta para Madri." },
+            { es: "El cajero automático me ha tragado la tarjeta.", pt: "O caixa eletrônico engoliu meu cartão." },
+            { es: "Tengo una cita con el dentista mañana por la tarde.", pt: "Tenho uma consulta com o dentista amanhã à tarde." },
+            { es: "Me gustaría hablar con el gerente, por favor.", pt: "Gostaria de falar com o gerente, por favor." },
+            { es: "Esta es la primera vez que pruebo la comida mexicana.", pt: "Esta é a primeira vez que provo comida mexicana." },
+            { es: "A pesar de la lluvia, decidimos salir a pasear.", pt: "Apesar da chuva, decidimos sair para passear." },
+            { es: "La tienda de ropa está justo enfrente de la panadería.", pt: "A loja de roupas fica bem em frente à padaria." },
+
+            // --- MÉDIO AVANÇADO: Expressões mais ricas e frases compostas (151-200) ---
+            { es: "No me parece que sea una buena idea en este momento.", pt: "Não me parece que seja uma boa ideia neste momento." },
+            { es: "Si hubiera sabido que venías, habría preparado algo especial.", pt: "Se eu soubesse que você vinha, teria preparado algo especial." },
+            { es: "Llevo viviendo en este barrio más de diez años.", pt: "Moro neste bairro há mais de dez anos." },
+            { es: "Espero que tengas un buen viaje y nos vemos pronto.", pt: "Espero que você tenha uma boa viagem e nos vemos em breve." },
+            { es: "Tan pronto como reciba las noticias, te llamaré.", pt: "Assim que eu receber as notícias, te ligarei." },
+            { es: "Aunque estaba cansado, siguió trabajando hasta tarde.", pt: "Embora estivesse cansado, continuou trabalhando até tarde." },
+            { es: "Me sorprende que nadie se haya quejado todavía.", pt: "Me surpreende que ninguém tenha reclamado ainda." },
+            { es: "El apartamento que alquilamos tiene vistas al mar.", pt: "O apartamento que alugamos tem vista para o mar." },
+            { es: "Tienes que presionar el botón rojo para encender la máquina.", pt: "Você tem que apertar o botão vermelho para ligar a máquina." },
+            { es: "Me arrepiento de no haber estudiado más para el examen.", pt: "Me arrependo de não ter estudado mais para o exame." },
+            { es: "Lo que más me gusta de ella es su sentido del humor.", pt: "O que mais gosto nela é o seu senso de humor." },
+            { es: "No hay nada mejor que una taza de café caliente por la mañana.", pt: "Não há nada melhor que uma xícara de café quente pela manhã." },
+            { es: "Por mucho que lo intente, no logro entender este problema.", pt: "Por mais que eu tente, não consigo entender este problema." },
+            { es: "La habitación estaba tan oscura que no podíamos ver nada.", pt: "O quarto estava tão escuro que não conseguíamos ver nada." },
+            { es: "A menos que salgamos ahora, llegaremos tarde a la reunión.", pt: "A menos que saiamos agora, chegaremos atrasados na reunião." },
+            { es: "Te lo explicaré otra vez para que no haya malentendidos.", pt: "Te explicarei outra vez para que não haja mal-entendidos." },
+            { es: "El problema es mucho más complejo de lo que parece a simple vista.", pt: "O problema é muito mais complexo do que parece à primeira vista." },
+            { es: "Le pregunté si necesitaba ayuda, pero me dijo que no.", pt: "Perguntei a ele se precisava de ajuda, mas me disse que não." },
+            { es: "Me di cuenta de que había perdido la cartera cuando fui a pagar.", pt: "Percebi que tinha perdido a carteira quando fui pagar." },
+            { es: "No me importa dónde vayamos, siempre y cuando estemos juntos.", pt: "Não me importo onde vamos, contanto que estejamos juntos." },
+            { es: "Es muy probable que tengamos que posponer el evento.", pt: "É muito provável que tenhamos que adiar o evento." },
+            { es: "Me hizo mucha ilusión recibir tu carta de cumpleaños.", pt: "Fiquei muito animado em receber sua carta de aniversário." },
+            { es: "La conexión a internet aquí es demasiado lenta para trabajar.", pt: "A conexão de internet aqui é lenta demais para trabalhar." },
+            { es: "Estaría dispuesto a ayudarte si me explicas cómo hacerlo.", pt: "Eu estaria disposto a te ajudar se você me explicar como fazer isso." },
+            { es: "Fue una experiencia inolvidable que siempre recordaré.", pt: "Foi uma experiência inesquecível que sempre lembrarei." },
+            { es: "La conferencia comenzará puntualmente a las nueve de la mañana.", pt: "A conferência começará pontualmente às nove da manhã." },
+            { es: "Cuanto más estudio español, más fácil me resulta entenderlo.", pt: "Quanto mais estudo espanhol, mais fácil me resulta entendê-lo." },
+            { es: "No creo que debamos preocuparnos por ese pequeño detalle.", pt: "Não acho que devamos nos preocupar com esse pequeno detalhe." },
+            { es: "Te agradezco mucho por haberme prestado tu coche ayer.", pt: "Te agradeço muito por ter me emprestado o seu carro ontem." },
+            { es: "A fin de cuentas, lo más importante es estar en familia.", pt: "No fim das contas, o mais importante é estar em família." },
+            { es: "Tuvimos que cambiar nuestros planes debido a la huelga de transportes.", pt: "Tivemos que mudar nossos planos devido à greve de transportes." },
+            { es: "De niño, solía jugar en la calle hasta que se hacía de noche.", pt: "Quando criança, costumava brincar na rua até anoitecer." },
+            { es: "Me han dicho que el clima en esta época del año es muy agradable.", pt: "Me disseram que o clima nesta época do ano é muito agradável." },
+            { es: "Es una pena que no puedas acompañarnos a la fiesta de esta noche.", pt: "É uma pena que você não possa nos acompanhar na festa desta noite." },
+            { es: "La empresa ha decidido implementar nuevas medidas de seguridad.", pt: "A empresa decidiu implementar novas medidas de segurança." },
+            { es: "No sabía que te gustaba tanto la pintura clásica.", pt: "Não sabia que você gostava tanto de pintura clássica." },
+            { es: "Me llevó más de una hora resolver el rompecabezas.", pt: "Levei mais de uma hora para resolver o quebra-cabeça." },
+            { es: "Dudo mucho que el paquete llegue antes del viernes por la tarde.", pt: "Duvido muito que o pacote chegue antes de sexta-feira à tarde." },
+            { es: "El concierto fue tan espectacular que la gente no dejaba de aplaudir.", pt: "O show foi tão espetacular que as pessoas não paravam de aplaudir." },
+            { es: "En mi opinión, deberíamos buscar una solución alternativa al problema.", pt: "Na minha opinião, deveríamos buscar uma solução alternativa para o problema." },
+            { es: "No vale la pena discutir por algo tan insignificante.", pt: "Não vale a pena discutir por algo tão insignificante." },
+            { es: "Lo extraño es que nadie se ha dado cuenta de su ausencia.", pt: "O estranho é que ninguém percebeu a ausência dele." },
+            { es: "Quería pedirte un favor enorme, si no es mucha molestia.", pt: "Queria te pedir um favor enorme, se não for muito incômodo." },
+            { es: "Habría comprado el vestido si hubiera estado en rebajas.", pt: "Teria comprado o vestido se estivesse na promoção." },
+            { es: "Me resulta fascinante aprender sobre diferentes culturas y tradiciones.", pt: "Acho fascinante aprender sobre diferentes culturas e tradições." },
+            { es: "Ojalá pudiera tomarme unas vacaciones largas en una isla tropical.", pt: "Quem dera eu pudesse tirar férias longas em uma ilha tropical." },
+            { es: "Es fundamental que leas las instrucciones antes de montar el mueble.", pt: "É fundamental que você leia as instruções antes de montar o móvel." },
+            { es: "El testigo declaró todo lo que vio durante el incidente de ayer.", pt: "A testemunha declarou tudo o que viu durante o incidente de ontem." },
+            { es: "Me conformo con que podamos terminar el proyecto a tiempo.", pt: "Fico satisfeito se pudermos terminar o projeto a tempo." },
+            { es: "A estas alturas, ya no me sorprende nada de lo que diga.", pt: "A esta altura, já não me surpreende nada do que ele diga." },
+
+            // --- MÉDIO AVANÇADO (201-250) ---
+            { es: "Si hubieras llegado cinco minutos antes, habrías visto el comienzo del espectáculo.", pt: "Se você tivesse chegado cinco minutos antes, teria visto o início do espetáculo." },
+            { es: "Es imprescindible que todos los empleados asistan a la reunión anual.", pt: "É imprescindível que todos os funcionários compareçam à reunião anual." },
+            { es: "Me molesta profundamente que la gente tire basura en la calle.", pt: "Me incomoda profundamente que as pessoas joguem lixo na rua." },
+            { es: "A medida que pasaban los años, su amistad se hacía cada vez más fuerte.", pt: "À medida que os anos passavam, a amizade deles ficava cada vez mais forte." },
+            { es: "No cabe duda de que este ha sido un año lleno de desafíos inesperados.", pt: "Não resta dúvida de que este foi um ano cheio de desafios inesperados." },
+            { es: "Te aconsejo que no tomes ninguna decisión precipitada sobre ese asunto.", pt: "Te aconselho a não tomar nenhuma decisão precipitada sobre esse assunto." },
+            { es: "Ese restaurante tiene la reputación de ofrecer la mejor gastronomía de la ciudad.", pt: "Aquele restaurante tem a reputación de oferecer a melhor gastronomia da cidade." },
+            { es: "Por si acaso llueve, he metido un paraguas en la mochila.", pt: "Para o caso de chover, coloquei um guarda-chuva na mochila." },
+            { es: "De haber sabido las consecuencias, jamás habría aceptado el trato.", pt: "Se soubesse das consequências, jamais teria aceitado o acordo." },
+            { es: "Es una lástima que el museo histórico esté cerrado por reformas actualmente.", pt: "É uma pena que o museu histórico esteja fechado para reformas atualmente." },
+            { es: "Me pregunto si alguna vez tendremos la oportunidad de viajar al espacio exterior.", pt: "Me pergunto se alguma vez teremos a oportunidade de viajar para o espaço exterior." },
+            { es: "La falta de comunicación suele ser la principal causa de conflictos en el equipo.", pt: "A falta de comunicação costuma ser a principal causa de conflitos na equipe." },
+            { es: "Antes de firmar el contrato, asegúrate de leer bien la letra pequeña.", pt: "Antes de assinar o contrato, certifique-se de ler bem as letras miúdas." },
+            { es: "A pesar de sus esfuerzos incansables, no lograron alcanzar el objetivo previsto.", pt: "Apesar de seus esforços incansáveis, não conseguiram alcançar o objetivo previsto." },
+            { es: "Me quedé sin palabras al ver el increíble regalo que me habían preparado.", pt: "Fiquei sem palavras ao ver o incrível presente que tinham preparado para mim." },
+            { es: "Conviene que repasemos el presupuesto antes de aprobar nuevos gastos mensuales.", pt: "Convém que revisemos o orçamento antes de aprovar novos gastos mensais." },
+            { es: "No podemos permitirnos el lujo de desperdiciar recursos tan valiosos ahora mismo.", pt: "Não podemos nos dar ao luxo de desperdiçar recursos tão valiosos agora mesmo." },
+            { es: "El desarrollo sostenible es clave para garantizar un futuro próspero a las nuevas generaciones.", pt: "O desenvolvimento sustentável é chave para garantir um futuro próspero às novas gerações." },
+            { es: "Me consta que han estado trabajando muy duro para superar esta crisis financiera.", pt: "Tenho certeza de que estiveram trabalhando muito duro para superar esta crise financeira." },
+            { es: "Pase lo que pase, siempre contarás con mi apoyo incondicional en tus proyectos.", pt: "Aconteça o que acontecer, sempre contará com meu apoio incondicional em seus projetos." },
+            { es: "Resulta evidente que la tecnología ha transformado nuestra forma de interactuar diariamente.", pt: "Fica evidente que a tecnologia transformou nossa forma de interagir diariamente." },
+            { es: "A simple vista parece sencillo, pero requiere de mucha técnica y concentración.", pt: "À primeira vista parece simples, mas exige muita técnica e concentração." },
+            { es: "Me fascina la capacidad de adaptación que tiene el ser humano frente a las adversidades.", pt: "Me fascina a capacidade de adaptação que o ser humano tem diante das adversidades." },
+            { es: "Bajo ninguna circunstancia debes compartir tus datos bancarios por correo electrónico.", pt: "Sob nenhuma circunstância você deve compartilhar seus dados bancários por e-mail." },
+            { es: "Es de suma importancia que mantengamos la calma y sigamos el protocolo de seguridad.", pt: "É de suma importância que mantenhamos a calma e sigamos o protocolo de segurança." },
+            { es: "El escritor tardó casi una década en concluir su obra maestra más reconocida.", pt: "O escritor levou quase uma década para concluir sua obra-prima mais reconhecida." },
+            { es: "Para colmo de males, el coche se estropeó justo en medio de la autopista.", pt: "Para piorar as coisas, o carro quebrou bem no meio da rodovia." },
+            { es: "La propuesta de valor de esta empresa destaca por su enfoque innovador y ecológico.", pt: "A proposta de valor desta empresa se destaca por seu enfoque inovador e ecológico." },
+            { es: "No es que no quiera ayudarte, es que literalmente no dispongo de tiempo libre hoy.", pt: "Não é que eu não queira te ajudar, é que literalmente não tenho tempo livre hoje." },
+            { es: "Me enorgullece ver cuánto has progresado desde que comenzaste este difícil curso.", pt: "Me orgulha ver o quanto você progrediu desde que começou este curso difícil." },
+            { es: "A no ser que haya un cambio de planes de última hora, nos vemos a las ocho.", pt: "A não ser que haja uma mudança de planos de última hora, nos vemos às oito." },
+            { es: "El informe detalla minuciosamente los pros y contras de la inversión propuesta.", pt: "O relatório detalha minuciosamente os prós e contras do investimento proposto." },
+            { es: "Me parece insólito que sigan ocurriendo este tipo de errores informáticos tan básicos.", pt: "Me parece insólito que continuem ocorrendo este tipo de erros de informática tão básicos." },
+            { es: "Con el propósito de mejorar la calidad del servicio, realizaremos algunas encuestas.", pt: "Com o propósito de melhorar a qualidade do serviço, realizaremos algumas pesquisas." },
+            { es: "Cuesta creer que un paisaje tan árido esconda una biodiversidad tan rica y fascinante.", pt: "Custa acreditar que uma paisagem tão árida esconda uma biodiversidade tão rica e fascinante." },
+            { es: "Teniendo en cuenta las circunstancias actuales, creo que hemos tomado la mejor ruta.", pt: "Levando em conta as circunstâncias atuais, creio que tomamos a melhor rota." },
+            { es: "No descarto la posibilidad de mudarme al extranjero por motivos laborales el próximo año.", pt: "Não descarto a possibilidade de me mudar para o exterior por motivos de trabalho no próximo ano." },
+            { es: "Es asombroso cómo la música puede evocar recuerdos y emociones tan profundamente arraigadas.", pt: "É assombroso como a música pode evocar memórias e emoções tão profundamente arraigadas." },
+            { es: "Cuanto antes abordemos este conflicto interno, menor será el impacto en nuestra productividad.", pt: "Quanto antes abordarmos este conflito interno, menor será o impacto em nossa produtividade." },
+            { es: "Me quedo tranquilo sabiendo que todo el papeleo legal ya está solucionado.", pt: "Fico tranquilo sabendo que toda a papelada legal já está resolvida." },
+            { es: "La conferencia superó todas las expectativas, aportando ideas brillantes para el futuro del sector.", pt: "A conferência superou todas as expectativas, trazendo ideias brilhantes para o futuro do setor." },
+            { es: "De ningún modo permitiré que traten a mis empleados con falta de respeto.", pt: "De modo algum permitirei que tratem meus funcionários com falta de respeito." },
+            { es: "El chef utiliza ingredientes locales para realzar el auténtico sabor de cada plato tradicional.", pt: "O chef usa ingredientes locais para realçar o sabor autêntico de cada prato tradicional." },
+            { es: "Sería un error garrafal ignorar las advertencias emitidas por el departamento de seguridad.", pt: "Seria um erro crasso ignorar os avisos emitidos pelo departamento de segurança." },
+            { es: "Por consiguiente, hemos decidido reestructurar completamente el departamento de marketing corporativo.", pt: "Por conseguinte, decidimos reestruturar completamente o departamento de marketing corporativo." },
+            { es: "La perseverancia es el rasgo distintivo de las personas que logran alcanzar sus sueños más altos.", pt: "A perseverança é o traço distintivo das pessoas que conseguem alcançar seus maiores sonhos." },
+            { es: "Me fascina la arquitectura gótica y la majestuosidad de las antiguas catedrales europeas.", pt: "Me fascina a arquitetura gótica e a majestosidade das antigas catedrais europeias." },
+            { es: "En resumidas cuentas, la experiencia en el extranjero fue el punto de inflexión en su carrera.", pt: "Em suma, a experiência no exterior foi o ponto de virada na sua carreira." },
+            { es: "Queda estrictamente prohibido el uso de dispositivos móviles durante la realización del examen final.", pt: "É estritamente proibido o uso de dispositivos móveis durante a realização do exame final." },
+            { es: "Finalmente, logré dominar la pronunciación en español gracias a mi constancia y práctica diaria.", pt: "Finalmente, consegui dominar a pronúncia em espanhol graças à minha constância e prática diária." }
         ];
 
-        const dom = {
-            quadro: document.getElementById('quadroImagem'), 
-            painel: document.getElementById('painelBotoes'),
-            frase: document.getElementById('fraseAlvo'),
-            pt: document.getElementById('traducaoPt'),
-            btnGravar: document.getElementById('btnGravar'),
-            lblGravar: document.getElementById('lbl-gravar'),
-            btnOuvir: document.getElementById('btnOuvir'),
-            status: document.getElementById('status'),
-            resultado: document.getElementById('resultadoTela'),
-            tagLocal: document.getElementById('tagLocal')
-        };
+        const painelBotoes = document.getElementById('painelBotoes');
+        const txtFraseAlvo = document.getElementById('fraseAlvo');
+        const txtTraducaoPt = document.getElementById('traducaoPt');
+        const btnGravar = document.getElementById('btnGravar');
+        const btnOuvir = document.getElementById('btnOuvir');
+        const statusTexto = document.getElementById('status');
+        const resultadoTela = document.getElementById('resultadoTela');
 
         let indiceAtual = 0;
         let fraseAtualEspanhol = ""; 
-        let progressoSalvo = JSON.parse(localStorage.getItem('progressoEspanholPro')) || [];
-        let isRecording = false; 
 
-        // --- MOTOR DE ÁUDIO NATIVO ---
-        let audioCtx;
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
+        // NOVO NOME no LocalStorage para não misturar com os testes antigos
+        let progressoSalvo = JSON.parse(localStorage.getItem('progressoEspanholV2')) || [];
 
-        function tocarSomAcerto() {
-            try {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.1); 
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.3);
-            } catch(e) {}
-        }
-
-        function tocarSomErro() {
-            try {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.3);
-            } catch(e) {}
-        }
-
-        // --- SISTEMA DE VOZ DO ROBÔ ---
-        dom.btnOuvir.addEventListener('click', () => {
-            initAudio(); 
+        // SISTEMA DE VOZ DO NAVEGADOR (Agora com Espanhol es-ES)
+        btnOuvir.addEventListener('click', () => {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel(); 
                 const robo = new SpeechSynthesisUtterance(fraseAtualEspanhol);
@@ -617,168 +375,135 @@
             }
         });
 
-        function inicializarApp() {
+        function criarBotoes() {
+            painelBotoes.innerHTML = ""; 
             for (let i = 0; i < listaDeFrases.length; i++) {
                 let botao = document.createElement("button");
-                botao.innerText = (i + 1).toString().padStart(3, '0');
+                botao.innerText = i + 1;
                 botao.className = "botao-numero";
                 botao.id = "btn-" + i;
-                if (progressoSalvo.includes(i)) botao.classList.add('concluido');
+                
+                if (progressoSalvo.includes(i)) {
+                    botao.classList.add('concluido');
+                }
                 
                 botao.addEventListener("click", () => {
-                    initAudio();
                     mudarFrase(i);
                 });
-                
-                dom.painel.appendChild(botao);
+                painelBotoes.appendChild(botao);
             }
-            mudarFrase(progressoSalvo.length > 0 ? Math.min(Math.max(...progressoSalvo) + 1, listaDeFrases.length - 1) : 0);
         }
 
         function mudarFrase(indice) {
             indiceAtual = indice;
             fraseAtualEspanhol = listaDeFrases[indice].es;
-            dom.frase.innerText = fraseAtualEspanhol;
-            dom.pt.innerText = listaDeFrases[indice].pt;
+            txtFraseAlvo.innerText = fraseAtualEspanhol;
+            txtTraducaoPt.innerText = listaDeFrases[indice].pt;
             
             document.querySelectorAll('.botao-numero').forEach(b => b.classList.remove('ativo'));
-            const btn = document.getElementById("btn-" + indice);
-            if(btn) {
-                btn.classList.add('ativo');
-                btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
+            document.getElementById("btn-" + indice).classList.add('ativo');
 
-            dom.resultado.innerHTML = "";
-            dom.status.innerText = "Aperte 'Falar' e repita a frase.";
-            dom.status.style.color = "var(--text-secondary)";
-
-            const imgSorteada = imagensDeFundo[Math.floor(Math.random() * imagensDeFundo.length)];
-            dom.quadro.style.backgroundImage = `url('${imgSorteada.url}')`;
-            dom.tagLocal.innerText = `📍 ${imgSorteada.nome}`;
-            
-            if (isRecording) {
-                 dom.btnGravar.click(); 
-            }
+            resultadoTela.innerHTML = "";
+            statusTexto.innerText = "Aperte en Hablar y lee la frase."; // Texto em Espanhol/Misturado para praticar
+            statusTexto.style.color = "#555";
         }
 
-        // --- NOVO BLOCO DA API DE RECONHECIMENTO DE VOZ ---
+        criarBotoes();
+        mudarFrase(0);
+
+        // SISTEMA DO MICROFONE (Mantido igual ao inglês, apenas mudei o idioma)
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
         if (SpeechRecognition) {
-            let recognition = null; 
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'es-ES'; // Idioma em Espanhol
+            recognition.interimResults = false;
 
-            dom.btnGravar.addEventListener('click', () => {
-                // Se já estiver gravando, cancelamos a gravação atual
-                if (isRecording && recognition) {
-                    try { recognition.stop(); } catch(e) {}
-                    return;
-                }
-                
-                // Cria uma nova instância a cada clique para evitar o "travamento"
-                recognition = new SpeechRecognition();
-                recognition.lang = 'es-ES'; 
-                recognition.interimResults = false;
-
-                recognition.onstart = () => {
-                    isRecording = true;
-                    dom.btnGravar.classList.add('gravando');
-                    dom.lblGravar.innerText = "Parar"; 
-                    dom.status.innerText = "🎤 Pode falar...";
-                    dom.status.style.color = "var(--accent-blue)"; 
-                    dom.resultado.innerHTML = "";
-                };
-
-                recognition.onend = () => {
-                    isRecording = false;
-                    dom.btnGravar.classList.remove('gravando');
-                    dom.lblGravar.innerText = "Falar";
-                };
-
-                recognition.onresult = (evento) => {
-                    const fraseFalada = evento.results[0][0].transcript;
-                    dom.status.innerText = `Você pronunciou: "${fraseFalada}"`;
-                    dom.status.style.color = "var(--text-secondary)";
-                    analisarPronuncia(fraseAtualEspanhol, fraseFalada);
-                };
-
-                recognition.onerror = (evento) => {
-                    console.error("Erro na API de voz:", evento.error);
-                    
-                    let msgErro = "❌ Erro ao escutar. Tente novamente.";
-                    if (evento.error === 'not-allowed') {
-                        msgErro = "❌ Permissão negada! Libere o microfone no navegador.";
-                    } else if (evento.error === 'no-speech') {
-                        msgErro = "❌ Nenhum som detectado.";
-                    }
-
-                    dom.status.innerText = msgErro;
-                    dom.status.style.color = "var(--error-red)";
-                    isRecording = false;
-                    dom.btnGravar.classList.remove('gravando');
-                    dom.lblGravar.innerText = "Falar";
-                };
-
-                try { 
-                    recognition.start(); 
-                } catch(e) { 
-                    console.error("Falha ao iniciar o microfone:", e);
+            btnGravar.addEventListener('click', () => {
+                try {
+                    recognition.start();
+                    statusTexto.innerText = "🎤 Escuchando... ¡Habla ahora!";
+                    statusTexto.style.color = "#007BFF";
+                    resultadoTela.innerHTML = "";
+                } catch(e) {
+                    console.error("Mic error:", e);
                 }
             });
 
+            recognition.addEventListener('result', (evento) => {
+                const fraseFalada = evento.results[0][0].transcript;
+                statusTexto.innerText = `Você disse: "${fraseFalada}"`;
+                statusTexto.style.color = "#555";
+                analisarEImprimirNaTela(fraseAtualEspanhol, fraseFalada);
+            });
+
+            // Tratamento de erro silencioso para evitar travamento
+            recognition.addEventListener('error', (evento) => {
+                statusTexto.innerText = "❌ No entendí. Inténtalo de nuevo.";
+                statusTexto.style.color = "#dc3545";
+            });
+
         } else {
-            dom.status.innerText = "⚠️ Seu navegador não suporta reconhecimento de voz.";
-            dom.btnGravar.style.display = "none";
+            statusTexto.innerText = "Seu navegador não suporta voz.";
         }
 
-        function analisarPronuncia(alvo, falada) {
-            const limpar = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[.,!?¡¿]/g, "").trim();
+        // LÓGICA DE CORREÇÃO (A grande diferença está AQUI)
+        function analisarEImprimirNaTela(alvo, falada) {
             
-            const palabrasAlvo = limpar(alvo).split(" ");
-            const palabrasFaladas = limpar(falada).split(" ");
+            // FUNÇÃO MÁGICA PARA O ESPANHOL: Remove ¡, ¿, pontuações e ACENTOS!
+            const limparTexto = (texto) => {
+                return texto.toLowerCase()
+                            .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove os acentos
+                            .replace(/[.,!?¡¿]/g, "") // remove toda a pontuação
+                            .trim();
+            };
+
+            let alvoLimpo = limparTexto(alvo);
+            let faladaLimpa = limparTexto(falada);
+
+            let palavrasOriginais = alvo.split(" "); // Para manter as pontuações e maiúsculas na tela
+            let palavrasAlvo = alvoLimpo.split(" ");
+            let palavrasFaladas = faladaLimpa.split(" ");
 
             let htmlFinal = "";
-            let acertouTudo = true;
+            let acertouTudo = true; 
 
-            for (let i = 0; i < palabrasAlvo.length; i++) {
-                let pCerta = palabrasAlvo[i];
-                let pDita = palabrasFaladas[i] || ""; 
+            for (let i = 0; i < palavrasAlvo.length; i++) {
+                let palavraCerta = palavrasAlvo[i];
+                let palavraDita = palavrasFaladas[i] || "";
+                let palavraVisual = palabrasOriginais[i];
 
-                if (pCerta === pDita) {
-                    htmlFinal += `<span class="correto">${listaDeFrases[indiceAtual].es.split(" ")[i]} </span>`;
+                if (palavraCerta === palavraDita) {
+                    htmlFinal += `<span class="correto">${palavraVisual} </span>`;
                 } else {
-                    htmlFinal += `<span class="errado">${listaDeFrases[indiceAtual].es.split(" ")[i]} </span>`;
-                    acertouTudo = false;
+                    htmlFinal += `<span class="errado">${palavraVisual} </span>`;
+                    acertouTudo = false; 
                 }
             }
 
-            dom.resultado.innerHTML = htmlFinal;
+            resultadoTela.innerHTML = htmlFinal;
 
             if (acertouTudo) {
-                tocarSomAcerto(); 
-                dom.status.innerText = "🎉 ¡Pronunciación Perfecta! Gold Star!";
-                dom.status.style.color = "var(--success-green)";
+                statusTexto.innerText = "🎉 ¡Perfecto! ¡Lección completada!";
+                statusTexto.style.color = "#28a745";
                 
                 if (!progressoSalvo.includes(indiceAtual)) {
                     progressoSalvo.push(indiceAtual);
-                    localStorage.setItem('progressoEspanholPro', JSON.stringify(progressoSalvo));
+                    localStorage.setItem('progressoEspanholV2', JSON.stringify(progressoSalvo));
                     document.getElementById("btn-" + indiceAtual).classList.add('concluido');
                 }
                 
                 setTimeout(() => {
                     if(indiceAtual < listaDeFrases.length - 1) {
                         mudarFrase(indiceAtual + 1);
-                    } else {
-                        dom.status.innerText = "🏆 ¡FELICIDADES! ¡Completaste todo!";
+                        // Rola os botões para baixo se a lição passar do limite visível
+                        document.getElementById("btn-" + (indiceAtual)).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     }
-                }, 1800);
+                }, 1500);
             } else {
-                tocarSomErro(); 
-                dom.status.innerText = "❌ Algunas palabras fallaron. ¡Inténtalo de nuevo!";
-                dom.status.style.color = "var(--error-red)";
+                statusTexto.innerText = "❌ ¡Ups! Has fallado algunas palabras. Inténtalo de nuevo.";
+                statusTexto.style.color = "#dc3545";
             }
         }
-
-        inicializarApp();
     </script>
 </body>
 </html>
