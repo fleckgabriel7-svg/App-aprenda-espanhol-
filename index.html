@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Espanhol Pro">
+    <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=150&q=80">
+
     <title>Espanhol Pro - Domine a Pronúncia</title>
     <style>
         /* CSS RESET & VARIAVEIS DE CORES DARK */
@@ -242,22 +245,24 @@
     </div>
 
     <script>
+        // 1. BANCO DE IMAGENS CORRIGIDO
         const imagensDeFundo = [
-            { url: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=800&q=80', nome: 'Torre Eiffel, París' },
+            { url: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=800&q=80', nome: 'Torre Eiffel, París' },
             { url: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=800&q=80', nome: 'Nueva York, EE. UU.' },
-            { url: 'https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80', nome: 'Tokio, Japón' },
+            { url: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80', nome: 'Tokio, Japón' },
             { url: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80', nome: 'Coliseo, Roma' },
             { url: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80', nome: 'Londres, Inglaterra' },
             { url: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=800&q=80', nome: 'Río de Janeiro, Brasil' },
-            { url: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80', nome: 'Ópera de Sídney' },
+            { url: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80', nome: 'Sídney, Australia' },
             { url: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80', nome: 'Kioto, Japón' },
             { url: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80', nome: 'Taj Mahal, India' },
             { url: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80', nome: 'Dubái, EAU' },
             { url: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80', nome: 'Santorini, Grecia' },
             { url: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=800&q=80', nome: 'Venecia, Italia' },
+            { url: 'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=800&q=80', nome: 'Big Ben, Londres' },
             { url: 'https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=800&q=80', nome: 'Machu Picchu, Perú' },
             { url: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80', nome: 'Muralla China' },
-            { url: 'https://images.unsplash.com/photo-1539667468225-eebb663053e6?auto=format&fit=crop&w=800&q=80', nome: 'Pirámides de Guiza' },
+            { url: 'https://images.unsplash.com/photo-1539667468225-eebb663053e6?auto=format&fit=crop&w=800&q=80', nome: 'Pirámides, Egipto' },
             { url: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=800&q=80', nome: 'Golden Gate, EE. UU.' },
             { url: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80', nome: 'Ruta 66, EE. UU.' },
             { url: 'https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&w=800&q=80', nome: 'Hollywood, EE. UU.' },
@@ -265,36 +270,33 @@
             { url: 'https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?auto=format&fit=crop&w=800&q=80', nome: 'Estambul, Turquía' },
             { url: 'https://images.unsplash.com/photo-1526649661456-89c7ed4d00b8?auto=format&fit=crop&w=800&q=80', nome: 'Singapur' },
             { url: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80', nome: 'Hong Kong' },
-            { url: 'https://images.unsplash.com/photo-1560930950-5ce20d36906f?auto=format&fit=crop&w=800&q=80', nome: 'Berlín, Alemania' },
-            { url: 'https://images.unsplash.com/photo-1583422409516-15ec0a05c317?auto=format&fit=crop&w=800&q=80', nome: 'Barcelona, España' },
-            { url: 'https://images.unsplash.com/photo-1551000673-f9c3c8d3da16?auto=format&fit=crop&w=800&q=80', nome: 'Atenas, Grecia' },
-            { url: 'https://images.unsplash.com/photo-1531366936337-7785a8208447?auto=format&fit=crop&w=800&q=80', nome: 'Aurora Boreal' },
+            { url: 'https://images.unsplash.com/photo-1531572753322-ad063cecc140?auto=format&fit=crop&w=800&q=80', nome: 'Roma, Italia' },
+            { url: 'https://images.unsplash.com/photo-1531366936337-7785a8208447?auto=format&fit=crop&w=800&q=80', nome: 'Aurora Boreal, Islandia' },
             { url: 'https://images.unsplash.com/photo-1474015977092-28f09d846b41?auto=format&fit=crop&w=800&q=80', nome: 'Gran Cañón, EE. UU.' },
-            { url: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=800&q=80', nome: 'Alpes Suizos' },
-            { url: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=80', nome: 'Islas Maldivas' },
+            { url: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=800&q=80', nome: 'Alpes, Suiza' },
+            { url: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=80', nome: 'Maldivas' },
             { url: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?auto=format&fit=crop&w=800&q=80', nome: 'Banff, Canadá' },
             { url: 'https://images.unsplash.com/photo-1579737190987-25e4fbaaa44d?auto=format&fit=crop&w=800&q=80', nome: 'Patagonia, Argentina' },
             { url: 'https://images.unsplash.com/photo-1454692173233-f4f34c12adad?auto=format&fit=crop&w=800&q=80', nome: 'Desierto del Sahara' },
             { url: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=800&q=80', nome: 'Cascadas, Islandia' },
+            { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80', nome: 'Montañas, Nueva Zelanda' },
             { url: 'https://images.unsplash.com/photo-1490682143684-14369e18dce8?auto=format&fit=crop&w=800&q=80', nome: 'Monte Fuji, Japón' },
             { url: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=800&q=80', nome: 'Yellowstone, EE. UU.' },
-            { url: 'https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=800&q=80', nome: 'Safari, Kenia' },
-            { url: 'https://images.unsplash.com/photo-1553531384-cc64ac80f931?auto=format&fit=crop&w=800&q=80', nome: 'Monte Everest' },
+            { url: 'https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=800&q=80', nome: 'Reserva Natural, Kenia' },
+            { url: 'https://images.unsplash.com/photo-1494500764479-0c8f2919a3d8?auto=format&fit=crop&w=800&q=80', nome: 'Desierto de Gobi' },
+            { url: 'https://images.unsplash.com/photo-1553531384-cc64ac80f931?auto=format&fit=crop&w=800&q=80', nome: 'Monte Everest, Nepal' },
             { url: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?auto=format&fit=crop&w=800&q=80', nome: 'Cataratas del Iguazú' },
             { url: 'https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=800&q=80', nome: 'Selva Amazónica' },
             { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80', nome: 'Playa del Caribe' },
-            { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80', nome: 'Fiordos, Noruega' },
-            { url: 'https://images.unsplash.com/photo-1438786657495-640937046d18?auto=format&fit=crop&w=800&q=80', nome: 'Salar de Uyuni' },
-            { url: 'https://images.unsplash.com/photo-1502021680123-db54070a72fb?auto=format&fit=crop&w=800&q=80', nome: 'Capadocia, Turquía' },
+            { url: 'https://images.unsplash.com/photo-1438786657495-640937046d18?auto=format&fit=crop&w=800&q=80', nome: 'Salar de Uyuni, Bolivia' },
+            { url: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80', nome: 'Mata Atlántica, Brasil' },
             { url: 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=800&q=80', nome: 'Cordillera de los Andes' },
             { url: 'https://images.unsplash.com/photo-1498307833015-e7b400441eb8?auto=format&fit=crop&w=800&q=80', nome: 'Islas Galápagos' },
-            { url: 'https://images.unsplash.com/photo-1506015391300-4802dc74de2e?auto=format&fit=crop&w=800&q=80', nome: 'Bahía de Ha Long' },
-            { url: 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80', nome: 'Selva Negra, Alemania' },
-            { url: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80', nome: 'Kilimanjaro, Tanzania' },
-            { url: 'https://images.unsplash.com/photo-1541427573-0305886e0044?auto=format&fit=crop&w=800&q=80', nome: 'Yosemite, EE. UU.' },
-            { url: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=800&q=80', nome: 'Playa, Maldivas' }
+            { url: 'https://images.unsplash.com/photo-1506015391300-4802dc74de2e?auto=format&fit=crop&w=800&q=80', nome: 'Bahía de Halong, Vietnam' },
+            { url: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=800&q=80', nome: 'Selva Negra, Alemania' }
         ];
 
+        // 2. BANCO DE 250 FRASES EM ESPANHOL
         const listaDeFrases = [
             { es: "Hola.", pt: "Olá." },
             { es: "Buenos días.", pt: "Bom dia." },
@@ -491,7 +493,7 @@
             { es: "Nada que hacer.", pt: "Nada a fazer." },
             { es: "Algo anda mal.", pt: "Algo está errado." },
             { es: "En cualquier momento.", pt: "A qualquer hora." },
-            { es: "En cualquier lugar.", pt: "Em cualquier lugar." },
+            { es: "En cualquier lugar.", pt: "Em qualquer lugar." },
             { es: "Que alguien ayude.", pt: "Alguém ajude." },
             { es: "No hay nadie aquí.", pt: "Ninguém está aqui." },
             { es: "Sonríe siempre.", pt: "Sempre sorria." },
@@ -556,10 +558,9 @@
 
         let indiceAtual = 0;
         let fraseAtualEspanhol = ""; 
-        let isRecording = false; // Novo controle anti-travamento
         let progressoSalvo = JSON.parse(localStorage.getItem('progressoEspanholPro')) || [];
 
-        // --- MOTOR DE ÁUDIO NATIVO (PARA OS SONS DE JOGO) ---
+        // --- MOTOR DE ÁUDIO NATIVO (SONS DE ACERTO/ERRO) ---
         let audioCtx;
         function initAudio() {
             if (!audioCtx) {
@@ -570,7 +571,6 @@
             }
         }
 
-        // Som de Moeda/Estrela (Acertou)
         function tocarSomAcerto() {
             try {
                 initAudio();
@@ -579,7 +579,7 @@
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.1); 
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
@@ -588,7 +588,6 @@
             } catch(e) {}
         }
 
-        // Som de Buzzer (Errou)
         function tocarSomErro() {
             try {
                 initAudio();
@@ -597,7 +596,7 @@
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(150, audioCtx.currentTime); 
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.3);
                 gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
@@ -660,27 +659,20 @@
             recognition.lang = 'es-ES'; 
             recognition.interimResults = false;
 
-            // BOTÃO DE GRAVAR MELHORADO (ANTI-TRAVAMENTO)
             dom.btnGravar.addEventListener('click', () => {
-                initAudio(); 
-                if (isRecording) {
-                    recognition.stop();
-                    return;
-                }
+                initAudio();
                 try { recognition.start(); } catch(e) { }
             });
 
             recognition.onstart = () => {
-                isRecording = true;
                 dom.btnGravar.classList.add('gravando');
                 dom.lblGravar.innerText = "Ouvindo...";
-                dom.status.innerText = "🎤 Pode hablar... (Clique de novo para cancelar)";
+                dom.status.innerText = "🎤 Sistema ativado. Pode hablar...";
                 dom.status.style.color = "var(--accent-blue)"; 
                 dom.resultado.innerHTML = "";
             };
 
             recognition.onend = () => {
-                isRecording = false;
                 dom.btnGravar.classList.remove('gravando');
                 dom.lblGravar.innerText = "Falar";
             };
@@ -692,10 +684,65 @@
                 analisarPronuncia(fraseAtualEspanhol, fraseFalada);
             };
 
-            // TRATAMENTO DE ERROS CLARO (Mostra porque não funcionou)
             recognition.onerror = (evento) => {
-                isRecording = false;
-                dom.btnGravar.classList.remove('gravando');
-                dom.lblGravar.innerText = "Falar";
+                dom.status.innerText = "❌ Erro no microfone. Tente novamente.";
+                dom.status.style.color = "var(--error-red)";
+            };
+
+        } else {
+            dom.status.innerText = "⚠️ Seu navegador não suporta reconhecimento de voz.";
+            dom.btnGravar.style.display = "none";
+        }
+
+        function analisarPronuncia(alvo, falada) {
+            const limpar = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[.,!?¡¿]/g, "").trim();
+            
+            const palabrasAlvo = limpar(alvo).split(" ");
+            const palabrasFaladas = limpar(falada).split(" ");
+
+            let htmlFinal = "";
+            let acertouTudo = true;
+
+            for (let i = 0; i < palabrasAlvo.length; i++) {
+                let pCerta = palabrasAlvo[i];
+                let pDita = palabrasFaladas[i] || ""; 
+
+                if (pCerta === pDita) {
+                    htmlFinal += `<span class="correto">${listaDeFrases[indiceAtual].es.split(" ")[i]} </span>`;
+                } else {
+                    htmlFinal += `<span class="errado">${listaDeFrases[indiceAtual].es.split(" ")[i]} </span>`;
+                    acertouTudo = false;
+                }
+            }
+
+            dom.resultado.innerHTML = htmlFinal;
+
+            if (acertouTudo) {
+                tocarSomAcerto(); 
+                dom.status.innerText = "🎉 ¡Pronunciación Perfecta! Gold Star!";
+                dom.status.style.color = "var(--success-green)";
                 
-                if (evento.error === 'not-allowed'
+                if (!progressoSalvo.includes(indiceAtual)) {
+                    progressoSalvo.push(indiceAtual);
+                    localStorage.setItem('progressoEspanholPro', JSON.stringify(progressoSalvo));
+                    document.getElementById("btn-" + indiceAtual).classList.add('concluido');
+                }
+                
+                setTimeout(() => {
+                    if(indiceAtual < listaDeFrases.length - 1) {
+                        mudarFrase(indiceAtual + 1);
+                    } else {
+                        dom.status.innerText = "🏆 ¡FELICIDADES! ¡Completaste todo!";
+                    }
+                }, 1800);
+            } else {
+                tocarSomErro(); 
+                dom.status.innerText = "❌ Algunas palabras fallaron. ¡Inténtalo de nuevo!";
+                dom.status.style.color = "var(--error-red)";
+            }
+        }
+
+        inicializarApp();
+    </script>
+</body>
+</html>
