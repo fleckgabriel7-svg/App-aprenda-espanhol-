@@ -560,9 +560,9 @@
         let indiceAtual = 0;
         let fraseAtualEspanhol = ""; 
         let progressoSalvo = JSON.parse(localStorage.getItem('progressoEspanholPro')) || [];
-        let isRecording = false; // Controle de segurança do microfone
+        let isRecording = false; 
 
-        // --- MOTOR DE ÁUDIO NATIVO (SONS DE ACERTO/ERRO) ---
+        // --- MOTOR DE ÁUDIO NATIVO ---
         let audioCtx;
         function initAudio() {
             if (!audioCtx) {
@@ -607,7 +607,7 @@
 
         // --- SISTEMA DE VOZ DO ROBÔ ---
         dom.btnOuvir.addEventListener('click', () => {
-            initAudio(); // Libera o áudio aqui, e NÃO no microfone!
+            initAudio(); 
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel(); 
                 const robo = new SpeechSynthesisUtterance(fraseAtualEspanhol);
@@ -625,7 +625,6 @@
                 botao.id = "btn-" + i;
                 if (progressoSalvo.includes(i)) botao.classList.add('concluido');
                 
-                // Libera o áudio ao trocar de lição também (Segurança iOS)
                 botao.addEventListener("click", () => {
                     initAudio();
                     mudarFrase(i);
@@ -657,59 +656,74 @@
             dom.quadro.style.backgroundImage = `url('${imgSorteada.url}')`;
             dom.tagLocal.innerText = `📍 ${imgSorteada.nome}`;
             
-            // Garante que o botão de microfone resete se mudar de frase no meio
             if (isRecording) {
-                 dom.btnGravar.click(); // Força o clique para cancelar o antigo
+                 dom.btnGravar.click(); 
             }
         }
 
+        // --- NOVO BLOCO DA API DE RECONHECIMENTO DE VOZ ---
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        
+
         if (SpeechRecognition) {
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'es-ES'; 
-            recognition.interimResults = false;
+            let recognition = null; 
 
             dom.btnGravar.addEventListener('click', () => {
-                // Se já estiver gravando, esse clique serve para CANCELAR a gravação travada
-                if (isRecording) {
+                // Se já estiver gravando, cancelamos a gravação atual
+                if (isRecording && recognition) {
                     try { recognition.stop(); } catch(e) {}
                     return;
                 }
                 
-                // Se não estiver gravando, começa agora
-                try { recognition.start(); } catch(e) { }
+                // Cria uma nova instância a cada clique para evitar o "travamento"
+                recognition = new SpeechRecognition();
+                recognition.lang = 'es-ES'; 
+                recognition.interimResults = false;
+
+                recognition.onstart = () => {
+                    isRecording = true;
+                    dom.btnGravar.classList.add('gravando');
+                    dom.lblGravar.innerText = "Parar"; 
+                    dom.status.innerText = "🎤 Pode falar...";
+                    dom.status.style.color = "var(--accent-blue)"; 
+                    dom.resultado.innerHTML = "";
+                };
+
+                recognition.onend = () => {
+                    isRecording = false;
+                    dom.btnGravar.classList.remove('gravando');
+                    dom.lblGravar.innerText = "Falar";
+                };
+
+                recognition.onresult = (evento) => {
+                    const fraseFalada = evento.results[0][0].transcript;
+                    dom.status.innerText = `Você pronunciou: "${fraseFalada}"`;
+                    dom.status.style.color = "var(--text-secondary)";
+                    analisarPronuncia(fraseAtualEspanhol, fraseFalada);
+                };
+
+                recognition.onerror = (evento) => {
+                    console.error("Erro na API de voz:", evento.error);
+                    
+                    let msgErro = "❌ Erro ao escutar. Tente novamente.";
+                    if (evento.error === 'not-allowed') {
+                        msgErro = "❌ Permissão negada! Libere o microfone no navegador.";
+                    } else if (evento.error === 'no-speech') {
+                        msgErro = "❌ Nenhum som detectado.";
+                    }
+
+                    dom.status.innerText = msgErro;
+                    dom.status.style.color = "var(--error-red)";
+                    isRecording = false;
+                    dom.btnGravar.classList.remove('gravando');
+                    dom.lblGravar.innerText = "Falar";
+                };
+
+                try { 
+                    recognition.start(); 
+                } catch(e) { 
+                    console.error("Falha ao iniciar o microfone:", e);
+                }
             });
-
-            recognition.onstart = () => {
-                isRecording = true;
-                dom.btnGravar.classList.add('gravando');
-                dom.lblGravar.innerText = "Parar"; // O botão vira um botão de parar
-                dom.status.innerText = "🎤 Pode falar...";
-                dom.status.style.color = "var(--accent-blue)"; 
-                dom.resultado.innerHTML = "";
-            };
-
-            recognition.onend = () => {
-                isRecording = false;
-                dom.btnGravar.classList.remove('gravando');
-                dom.lblGravar.innerText = "Falar";
-            };
-
-            recognition.onresult = (evento) => {
-                const fraseFalada = evento.results[0][0].transcript;
-                dom.status.innerText = `Você pronunciou: "${fraseFalada}"`;
-                dom.status.style.color = "var(--text-secondary)";
-                analisarPronuncia(fraseAtualEspanhol, fraseFalada);
-            };
-
-            recognition.onerror = (evento) => {
-                dom.status.innerText = "❌ Erro ou sem voz. Tente novamente.";
-                dom.status.style.color = "var(--error-red)";
-                isRecording = false;
-                dom.btnGravar.classList.remove('gravando');
-                dom.lblGravar.innerText = "Falar";
-            };
 
         } else {
             dom.status.innerText = "⚠️ Seu navegador não suporta reconhecimento de voz.";
